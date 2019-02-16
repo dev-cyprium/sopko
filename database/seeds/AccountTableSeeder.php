@@ -11,6 +11,8 @@ class AccountTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Account::class, 25)->create();
+        factory(App\Models\Account::class, 25)->create()->each(function ($account) {
+            $account->authKeys()->create();
+        });
     }
 }
