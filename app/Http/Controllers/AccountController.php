@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller;
 use App\Repo\AccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class AccountController extends ApiController
 {

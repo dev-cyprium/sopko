@@ -5,6 +5,7 @@ namespace App\Repo;
 use App\Repo\Contracts\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
+use Illuminate\Auth\Events\Registered;
 
 abstract class EloquentRepository implements Repository
 {
@@ -27,6 +28,7 @@ abstract class EloquentRepository implements Repository
     {
         $this->model->fill($attributes);
         $this->model->save();
+        event(new Registered($this->model));
     }
 
     function makeModel()
