@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class Account
+class Account extends Model
 {
     use Notifiable;
 
