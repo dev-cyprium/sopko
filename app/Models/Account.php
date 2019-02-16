@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 
-class User
+class Account
 {
     use Notifiable;
 
