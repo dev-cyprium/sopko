@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateAuthKeyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('company_name');
-            $table->string('email')->unique();
-            $table->string('password_hash');
+        Schema::create('auth_keys', function (Blueprint $table) {
+            $table->string('hash', 500)->primary();
+            $table->unsignedInteger('account_id');
+            $table->foreign('account_id')
+                ->references('id')
+                ->on('accounts');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('auth_keys');
     }
 }
