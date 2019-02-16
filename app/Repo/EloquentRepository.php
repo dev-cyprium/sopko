@@ -23,6 +23,12 @@ abstract class EloquentRepository implements Repository
         return $this->model->all();
     }
 
+    public function store(array $attributes)
+    {
+        $this->model->fill($attributes);
+        $this->model->save();
+    }
+
     function makeModel()
     {
         $this->model = $this->app->make($this->model());

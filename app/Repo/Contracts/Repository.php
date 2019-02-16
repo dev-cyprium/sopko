@@ -10,4 +10,7 @@ interface Repository
      * @return array
      */
     public function getAll();
+
+
+    public function store(array $attributes);
 }
