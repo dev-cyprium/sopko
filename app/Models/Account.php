@@ -26,4 +26,9 @@ class Account extends Model
     protected $hidden = [
         'password_hash'
     ];
+
+    public function authKeys()
+    {
+        return $this->hasMany(AuthKey::class);
+    }
 }

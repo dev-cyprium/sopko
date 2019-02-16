@@ -26,6 +26,7 @@ class CreateApiKey
      */
     public function handle(Registered $event)
     {
-        echo "Event being handled!";
+        $account = $event->account;
+        $account->authKeys()->create();
     }
 }
