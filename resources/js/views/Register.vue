@@ -4,9 +4,10 @@
             <v-flex xs12 sm8 md4>
                 <v-card class="elevation-10">
                     <v-toolbar dark color="primary">
-                        <v-toolbar-title>Šopko - Prijava Korisnika</v-toolbar-title>
+                        <v-toolbar-title>Šopko - Registracija</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
+                        <p>Trebaće nam Vaši kredencijali kako bi ste se prijavili kasnije</p>
                         <v-form>
                             <v-text-field 
                                 prepend-icon="email"
