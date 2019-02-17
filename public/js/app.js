@@ -1344,11 +1344,11 @@ var render = function() {
                   _c(
                     "v-card-actions",
                     [
-                      _c("p", { staticClass: "pl-2" }, [
-                        _vm._v("Još uvek nemate nalog?")
-                      ]),
-                      _vm._v(" "),
                       _c("v-spacer"),
+                      _vm._v(" "),
+                      _c("v-btn", { staticClass: "primary ml-2" }, [
+                        _vm._v("Registruj Se")
+                      ]),
                       _vm._v(" "),
                       _c("v-btn", { attrs: { color: "primary" } }, [
                         _vm._v("Prijavi Se")

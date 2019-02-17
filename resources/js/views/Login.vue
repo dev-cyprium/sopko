@@ -23,8 +23,8 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <p class="pl-2">Još uvek nemate nalog?</p>
                         <v-spacer></v-spacer>
+                        <v-btn class="primary ml-2">Registruj Se</v-btn>
                         <v-btn color="primary">Prijavi Se</v-btn>
                     </v-card-actions>
                 </v-card>
