@@ -1,0 +1,42 @@
+<template>
+    <v-container fluid fill-height class="show-pattern">
+        <v-layout align-center justify-center>
+            <v-flex xs12 sm8 md4>
+                <v-card class="elevation-10">
+                    <v-toolbar dark color="primary">
+                        <v-toolbar-title>Šopko - Prijava Korisnika</v-toolbar-title>
+                    </v-toolbar>
+                    <v-card-text>
+                        <v-form>
+                            <v-text-field 
+                                prepend-icon="email"
+                                name="email"
+                                label="Email"
+                                type="texdt"
+                            />
+                            <v-text-field 
+                                prepend-icon="lock"
+                                name="password"
+                                label="Password"
+                                type="password"
+                            />
+                        </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                        <p class="pl-2">Još uvek nemate nalog?</p>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary">Prijavi Se</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
+</template>
+
+<script>
+import '../img/folk-pattern.png'
+
+export default {
+
+}
+</script>

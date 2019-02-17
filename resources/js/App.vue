@@ -1,15 +1,16 @@
 <template>
     <v-app>
-        <div class="mx-2 my-2">
-            <h1>Vue</h1>
-            <h2>Vuetify</h2>
-            <h3>setup successfull</h3>
-        </div>
+        <Login />
     </v-app>
 </template>
 
 <script>
+
+import Login from './views/Login';
+
 export default {
-    
+    components: {
+        Login
+    }
 }
 </script>
