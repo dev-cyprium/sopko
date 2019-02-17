@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
+// We only care about one single route since we're using SPA :)
+Route::get('/{any}', function() {
     return view('welcome');
-});
+})->where('any', '.*');
