@@ -28,18 +28,26 @@
                            <v-stepper-items>
                                <v-stepper-content step="1" class="elevation-0">
                                    <p>Trebaće nam Vaši kredencijali kako bi ste se prijavili kasnije</p>
-                                        <v-form>
+                                        <v-form v-model="valid" ref="form1">
                                             <v-text-field 
+                                                v-model="email"
+                                                :rules="emailRules"
                                                 prepend-icon="email"
                                                 label="Email"
                                                 type="text"
                                             />
                                             <v-text-field 
+                                                v-model="password"
+                                                :rules="passwordRules"
+                                                :append-icon="show1 ? 'visibility_off' : 'visibility'"
+                                                @click:append="show1 = !show1"
                                                 prepend-icon="lock"
                                                 label="Lozinka"
-                                                type="password"
+                                                :type="show1 ? 'text' : 'password'"
                                             />
                                             <v-text-field 
+                                                v-model="passwordConfirm"
+                                                :error-messages='passwordConfirmation()'
                                                 prepend-icon="lock"
                                                 label="Ponvljena Lozinka"
                                                 type="password"
@@ -48,7 +56,7 @@
                                </v-stepper-content>
                                <v-stepper-content step="2" class="elevation-0">
                                    <p>Sada, trebaće nam Vaš kontakt kako bi bili dostupni za eventualna pitanja</p>
-                                        <v-form>
+                                        <v-form ref="form2">
                                             <v-text-field 
                                                 prepend-icon="phone"
                                                 label="Telefon 1"
@@ -82,7 +90,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" @click="el = el + 1">Nastavi</v-btn>
+                        <v-btn color="primary" @click="validateStep()">Nastavi</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-flex>
@@ -93,9 +101,33 @@
 <script>
 
 export default {
-    data() {
-        return {
-            el: 1
+    data: () => ({
+        el: 1,
+        valid: true,
+        show1: false,
+        email: '',
+        emailRules: [
+            v => !!v || 'Email polje je obavezno',
+            v => /.+@.+/.test(v) || 'Email mora biti validan'
+        ],
+        password: '',
+        passwordRules: [
+            v => !!v || 'Lozinka polje je obavezno',
+            v => /^(?=.*[A-Z])(?=.*[\$\@\.\&\?\%\#\!]).{6,}$/.test(v) 
+                || 'Lozinka mora biti najmanje 6 karaktera i sadrzati veliko slovo i bar jedan specijalni karakter'
+        ],
+        passwordConfirm: ''
+    }),
+    methods: {
+        passwordConfirmation() {
+            return (this.password === this.passwordConfirm) ? '' : 'Lozinke nisu iste'
+        },
+        validateStep() {
+            const form = this.$refs['form' + this.el]
+            form.validate()
+            if(this.valid) {
+                this.el +=  1
+            }
         }
     }
 }
