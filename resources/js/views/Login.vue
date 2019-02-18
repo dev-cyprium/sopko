@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid fill-height class="show-pattern">
+    <v-container fluid fill-height class="grey lighten-5">
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
                 <v-card class="elevation-10">
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import '../img/folk-pattern.png'
 
 export default {
 
