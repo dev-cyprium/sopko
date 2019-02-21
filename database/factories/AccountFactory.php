@@ -19,6 +19,6 @@ $factory->define(App\Models\Account::class, function (Faker $faker) {
         'company_name' => $faker->company,
         'email' => $faker->unique()->safeEmail,
         'full_name' => $faker->name,
-        'password_hash' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'password_hash' => '$2y$10$ndb6druVK85hjixMGW5L.uzsn.wceouxUy1wnnrYPcLoxv69QkLq6', // secret
     ];
 });

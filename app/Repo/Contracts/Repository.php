@@ -2,15 +2,15 @@
 
 namespace App\Repo\Contracts;
 
-interface Repository
-{
-    /**
-     * Return all of the entities
-     * 
-     * @return array
-     */
-    public function getAll();
+  interface Repository
+  {
+      /**
+       * Return all of the entities
+       *
+       * @return array
+       */
+      public function getAll();
 
 
-    public function store(array $attributes);
-}
+      public function store(array $attributes);
+  }

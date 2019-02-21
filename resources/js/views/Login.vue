@@ -48,7 +48,7 @@ export default {
     },
     methods: {
         login() {
-            const {email, password} = this;
+            const {email, password} = this
             this.$store.dispatch('login', {email, password})
             .then(() => console.log("Success"))
             .catch(err => console.log(err))

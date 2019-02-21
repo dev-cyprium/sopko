@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use App\Repo\AccountRepository;
 use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Hash;
 
 class AccountController extends ApiController
 {
@@ -19,7 +18,7 @@ class AccountController extends ApiController
     public function store(Request $request)
     {
         $request->validate($this->validateCondition());
-        $with_crypt = array_merge($request->all(), ['password_hash' => bcrypt($request['password'])]);
+        $with_crypt = array_merge($request->all(), ['password_hash' => Hash::make($request['password'])]);
         $this->repo->store($with_crypt);
         return $this->ok("Successfully registered an user");
     }
