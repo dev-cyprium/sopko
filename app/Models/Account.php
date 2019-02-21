@@ -15,7 +15,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'email', 'company_name', 'password_hash'
+        'email', 'company_name', 'password_hash', 'telephone_1', 'telephone_2', 'full_name'
     ];
 
     /**
