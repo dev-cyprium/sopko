@@ -56,18 +56,24 @@
                                </v-stepper-content>
                                <v-stepper-content step="2" class="elevation-0">
                                    <p>Sada, trebaće nam Vaš kontakt kako bi bili dostupni za eventualna pitanja</p>
-                                        <v-form ref="form2">
+                                        <v-form v-model="valid" ref="form2">
                                             <v-text-field 
+                                                v-model="telephone1"
+                                                :rules="telephoneRules"
                                                 prepend-icon="phone"
                                                 label="Telefon 1"
                                                 type="text"
                                             />
                                             <v-text-field 
+                                                v-model="telephone2"
+                                                :rules="telephoneRules"
                                                 prepend-icon="phone"
                                                 label="Telefon 2"
                                                 type="text"
                                             />
                                             <v-text-field 
+                                                v-model="fullName"
+                                                :rules="fullNameRules"
                                                 prepend-icon="person"
                                                 label="Puno Ime"
                                                 type="text"
@@ -90,7 +96,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" @click="validateStep()">Nastavi</v-btn>
+                        <v-btn v-show="el != 3" color="primary" @click="validateStep()">Nastavi</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-flex>
@@ -116,7 +122,16 @@ export default {
             v => /^(?=.*[A-Z])(?=.*[\$\@\.\&\?\%\#\!]).{6,}$/.test(v) 
                 || 'Lozinka mora biti najmanje 6 karaktera i sadrzati veliko slovo i bar jedan specijalni karakter'
         ],
-        passwordConfirm: ''
+        passwordConfirm: '',
+        telephone1: '',
+        telephone2: '',
+        telephoneRules: [
+            v => v === "" || /^\+?\d{4,12}$/.test(v) || 'Telefon nije u dobrom formatu'
+        ],
+        fullName: '',
+        fullNameRules: [
+            v => !!v || 'Puno Ime polje je obavezno'
+        ]
     }),
     methods: {
         passwordConfirmation() {
@@ -125,7 +140,9 @@ export default {
         validateStep() {
             const form = this.$refs['form' + this.el]
             form.validate()
+
             if(this.valid) {
+                this.valid = false;
                 this.el +=  1
             }
         }
