@@ -17,8 +17,8 @@ class LoginController extends ApiController
         $email    = $request['email'];
         $password = $request['password'];
 
-        if($accountProvider->checkCredentials($email, $password)) {
-            return $this->ok("Successfuly authorized user", ["apikey" => "xxxxx-xxx-xxx-xxx"]);
+        if($accountProvider->checkCredentials($email, $password, $foundAccount)) {
+            return $this->ok("Successfuly authorized user", $foundAccount->serialize());
         }
 
         return $this->forbidden("Invalid email or password");
