@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Login from './views/Login'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
-import store from './store.js'
+import store from './store'
 
 Vue.use(Router)
 
