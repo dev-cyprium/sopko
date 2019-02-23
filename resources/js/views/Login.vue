@@ -11,6 +11,8 @@
                             
                                 <v-text-field 
                                     v-model="email"
+                                    :error-messages="loginError"
+                                    @input="loginError = []"
                                     prepend-icon="email"
                                     name="email"
                                     label="Email"
@@ -43,15 +45,16 @@ export default {
     data() {
         return {
             email: "",
-            password: ""
+            password: "",
+            loginError: []
         }
     },
     methods: {
         login() {
             const {email, password} = this
             this.$store.dispatch('login', {email, password})
-            .then(() => console.log("Success"))
-            .catch(err => console.log(err))
+            .then(() => this.$router.push('/'))
+            .catch(err => this.loginError.push('Neispravno kor. ime ili lozinka'))
         }
     }
 }

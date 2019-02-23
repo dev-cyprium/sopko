@@ -22,6 +22,11 @@ export default new Vuex.Store({
         auth_error(state) {
             state.status = 'error'
         },
+        logout(state) {
+            state.user = {}
+            state.status = ''
+            state.token = ''
+        }
     },
     actions: {
         login({commit}, user) {
@@ -29,10 +34,10 @@ export default new Vuex.Store({
                 commit('auth_request')
                 axios({url: '/api/login', data: user, method: 'POST'})
                 .then(resp => {
-                    const {token, user} = resp.data
-                    localStorage.setItem('token', token)
-                    axios.defaults.headers.common['Authorization'] = token
-                    commit('auth_success', token, user)
+                    const {apiKey, fullName} = resp.data
+                    localStorage.setItem('token', apiKey)
+                    axios.defaults.headers.common['Authorization'] = apiKey
+                    commit('auth_success', apiKey, fullName)
                     resolve(resp)
                 })
                 .catch(err => {
@@ -42,6 +47,14 @@ export default new Vuex.Store({
                 })
             });
         },
+        logout({commit}) {
+            return new Promise((resolve) => {
+                commit('logout')
+                localStorage.removeItem('token')
+                delete axios.defaults.headers.common['Authorization']
+                resolve()
+            })
+        }
     },
     getters: {
         isLoggedIn: state => !!state.token,
