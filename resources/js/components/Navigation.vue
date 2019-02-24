@@ -36,9 +36,9 @@ export default {
         return {
             items: [
                 {title: 'Proizvodi', icon: 'business_center', action: {route: '/'}},
-                {title: 'Kategorije Proizvoda', icon: 'category'},
-                {title: 'Skadište', icon: 'dns'},
-                {title: 'Izveštaji', icon: 'receipt'},
+                {title: 'Kategorije Proizvoda', icon: 'category', action: {route: '/category'}},
+                {title: 'Skadište', icon: 'dns', action: {route: '/storage'}},
+                {title: 'Izveštaji', icon: 'receipt', action: {route: '/reports'}},
                 {title: 'Odjavi Se', icon: 'exit_to_app', action: {dispatch: 'logout', route: '/login'}},
             ]
         }

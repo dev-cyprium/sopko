@@ -29,15 +29,71 @@
                 </AdminCard>
             </v-flex>
         </v-layout>
+
+        <v-layout>
+            <v-flex xs12 class="px-2 py-2">
+                <v-card>
+                    <v-card-title>
+                        <h1>Proizvodi</h1>
+                    </v-card-title>
+                        <v-data-table :headers="headers" :items="products" class="elevation-1">
+                            <template v-slot:items="props">
+                                <td class="pt-2 pb-1">
+                                    <img :src="props.item.img">
+                                </td>
+                                <td class="text-xs-left">{{ props.item.name }}</td>
+                                <td class="text-xs-left">{{ props.item.current_price }}</td>
+                                <td class="text-xs-left">{{ props.item.quantity }}</td>
+                                <td class="text-xs-left">
+                                    <a href="#">
+                                        {{ props.item.storage.location }}
+                                    </a>
+                                </td>
+                            </template>
+                        </v-data-table>
+                </v-card>
+            </v-flex>
+        </v-layout>
+
     </v-container>
 </template>
 
 <script>
-import AdminCard from '../components/AdminCard'
+    import AdminCard from '../components/AdminCard'
+    import products from './mocks/products'
 
-export default {
-    components: {
-        AdminCard
+    export default {
+        components: {
+            AdminCard
+        },
+        data() {
+            return {
+                headers: [{
+                        text: 'Slika Proizvoda',
+                        align: 'left',
+                        sortable: false,
+                        value: 'img'
+                    },
+                    {
+                        text: 'Naziv',
+                        value: 'name'
+                    },
+                    {
+                        text: 'Trenutna Cena',
+                        value: 'current_price'
+                    },
+                    {
+                        text: 'Stanje',
+                        value: 'quantity'
+                    },
+                    {
+                        text: 'Skladište',
+                        value: 'storage.location'
+                    }
+                ],
+                products
+                }
+            }
     }
-}
+
 </script>
