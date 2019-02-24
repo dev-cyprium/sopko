@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Storage;
+use App\Models\StorageType;
 
 class StorageSeeder extends Seeder
 {
@@ -16,12 +17,12 @@ class StorageSeeder extends Seeder
         $type2 = StorageType::find(2);
 
         factory(Storage::class, 5)->make()->each(function($storage) use ($type1) {
-            $storage->type()->save($type1);
+            $storage->type()->associate($type1);
         });
 
 
         factory(Storage::class, 5)->make()->each(function($storage) use ($type2) {
-            $storage->type()->save($type2);
+            $storage->type()->associate($type2);
         });
     }
 }
