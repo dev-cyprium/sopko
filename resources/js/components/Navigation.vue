@@ -1,9 +1,9 @@
 <template>
-    <v-navigation-drawer permanent app>
+    <v-navigation-drawer permanent app dark>
     <v-toolbar flat>
       <v-list>
         <v-list-tile>
-          <v-list-tile-title class="title">
+          <v-list-tile-title class='title'>
             Šopko
           </v-list-tile-title>
         </v-list-tile>
@@ -12,10 +12,11 @@
 
     <v-divider></v-divider>
 
-    <v-list dense class="pt-0">
+    <v-list dense class='pt-0'>
       <v-list-tile
-        v-for="item in items"
-        :key="item.title"
+        v-for='item in items'
+        :key='item.title'
+        @click='handleRouteClick(item.action)'
       >
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
@@ -34,13 +35,25 @@ export default {
     data() {
         return {
             items: [
-                {title: "Proizvodi", icon: 'business_center'},
-                {title: "Kategorije Proizvoda", icon: 'category'},
-                {title: "Skadište", icon: 'business_center'},
-                {title: "Izveštaji", icon: 'receipt'},
-                {title: "Odjavi Se", icon: "power"},
+                {title: 'Proizvodi', icon: 'business_center', action: {route: '/'}},
+                {title: 'Kategorije Proizvoda', icon: 'category'},
+                {title: 'Skadište', icon: 'dns'},
+                {title: 'Izveštaji', icon: 'receipt'},
+                {title: 'Odjavi Se', icon: 'exit_to_app', action: {dispatch: 'logout', route: '/login'}},
             ]
         }
+    },
+    methods: {
+      handleRouteClick({route, dispatch}) {
+        if(route) {
+          this.$router.push(route);
+        } 
+        
+        if(dispatch) {
+           this.$store.dispatch(dispatch)
+              .then(() => this.$router.push(route))
+        }
+      }
     }
 }
 </script>

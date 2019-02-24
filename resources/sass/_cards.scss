@@ -1,0 +1,16 @@
+.admin-card {
+    .box-icon {
+        position: relative;
+        width: $card_icon_size;
+        height: $card_icon_size;
+        top: -2.5rem;
+        left: 1.5rem;
+        border-radius: 10% !important;
+        .v-icon {
+            font-size: 2.4rem;
+        }
+    }
+    .v-card__title {
+        margin-top: -5.7rem;
+    }
+}

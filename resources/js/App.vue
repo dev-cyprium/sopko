@@ -1,6 +1,6 @@
 <template>
     <v-app class="grey lighten-4">
-        <Navigation/>
+        <Navigation v-if="this.$store.getters.isLoggedIn" />
         
         <v-content>
             <router-view />
@@ -13,9 +13,11 @@
 import Navigation from './components/Navigation'
 
 export default {
-
     components: {
         Navigation
+    },
+    computed: {
+
     }
 }
 </script>

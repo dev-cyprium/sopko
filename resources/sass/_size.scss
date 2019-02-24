@@ -1,0 +1,5 @@
+@each $w in $widths {
+    .w-#{$w} {
+        width: $w + 0%;
+    }
+}
