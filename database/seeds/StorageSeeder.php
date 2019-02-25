@@ -18,11 +18,13 @@ class StorageSeeder extends Seeder
 
         factory(Storage::class, 5)->make()->each(function($storage) use ($type1) {
             $storage->type()->associate($type1);
+            $storage->save();
         });
 
 
         factory(Storage::class, 5)->make()->each(function($storage) use ($type2) {
             $storage->type()->associate($type2);
+            $storage->save();
         });
     }
 }

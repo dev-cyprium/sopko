@@ -18,6 +18,9 @@ class CreateProductPriceTable extends Migration
             $table->decimal('price', 10, 2);
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('group_id')->nullable();
+            $table->foreign('product_id')
+                  ->references('id')
+                  ->on('products');
             $table->timestamps();
         });
     }
