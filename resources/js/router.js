@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './views/Login'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
+import Categories from './views/Categories'
 import store from './store'
 
 Vue.use(Router)
@@ -27,6 +28,11 @@ let router = new Router({
             path: '/register',
             name: 'register',
             component: Register
+        },
+        {
+            path: '/categories',
+            name: 'categories',
+            component: Categories
         }
     ]
 })

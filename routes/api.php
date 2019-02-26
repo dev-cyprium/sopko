@@ -14,3 +14,8 @@ use Illuminate\Http\Request;
 */
 Route::post("/account", "AccountController@store");
 Route::post("/login", "LoginController@login");
+
+
+Route::middleware(['api_auth'])->group(function() {
+    Route::get("/categories", "CategoryController@index");
+});

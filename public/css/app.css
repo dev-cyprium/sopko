@@ -31,3 +31,15 @@
   margin-top: -5.7rem;
 }
 
+.skip-flex {
+  flex: 0 0 auto !important;
+}
+
+.sp-d-flex {
+  display: flex;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
