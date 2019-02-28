@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\AuthKey;
 use Illuminate\Support\Facades\Auth;
+use App\Facades\Sopko;
 
 class ApiAuthMiddleware
 {
@@ -24,6 +25,7 @@ class ApiAuthMiddleware
             return response()->json(['message' => 'This action is not permited. Pleaase add the Authorization header and it\'s key'], 403);
         }
 
+        Sopko::remember('account', $dbKey->account);
         return $next($request);
     }
 }

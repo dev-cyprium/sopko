@@ -27,8 +27,19 @@ class Account extends Model
         'password_hash'
     ];
 
+    /**
+     * Gets all of the authorization keys of this account
+     */
     public function authKeys()
     {
         return $this->hasMany(AuthKey::class);
+    }
+
+    /**
+     * Gets all the categories of this account
+     */
+    public function categories()
+    {
+        return $this->hasMany(ProductCategory::class);
     }
 }
