@@ -26,5 +26,14 @@ export default {
             delete axios.defaults.headers.common['Authorization']
             resolve()
         })
+    },
+    categories({commit}) {
+        return new Promise((resolve) => {
+            axios({url: '/api/categories', method: 'GET'})
+            .then(resp => {
+                commit('categories', resp.data.categories)
+                resolve()
+            })
+        })
     }
 }

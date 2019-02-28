@@ -85,13 +85,17 @@
 
 <script>
 import Vue from 'vue'
+import { mapState } from 'vuex'
 
 export default {
+    mounted() {
+        this.$store.dispatch('categories')
+    },
     data() {
         return {
             dialog: false,
             search: '',
-            allCategories: ['Tehnologija', 'Namirnice', 'Razno'],
+            // allCategories: ['Tehnologija', 'Namirnice', 'Razno'],
             open: ['Aktivne Kategorije'],
             tree: [],
             items: [
@@ -115,6 +119,10 @@ export default {
 
         }
     },
+    computed: mapState({
+        storeItems: state => this.parseAPIState(state.productCategories),
+        allCategories: state => state.productCategories.map(category => category.title)
+    }),
     methods: {
         newCategory() {
             this.dialog = false

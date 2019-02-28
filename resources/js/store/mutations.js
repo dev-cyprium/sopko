@@ -14,5 +14,8 @@ export default {
         state.user = {}
         state.status = ''
         state.token = ''
+    },
+    categories(state, categories) {
+        state.productCategories = categories 
     }
 }
