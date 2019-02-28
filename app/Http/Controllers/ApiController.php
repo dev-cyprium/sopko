@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 
-
+// TODO: add static requests consatnts for a status codes in static class...
 abstract class ApiController extends Controller
 {
     protected function ok($message, $extra = [])

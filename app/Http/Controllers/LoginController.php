@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class LoginController extends ApiController
 {
+    /// TODO extend FormRequest for validation
     public function login(Request $request, AccountContract $accountProvider)
     {
         $request->validate([

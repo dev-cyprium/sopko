@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Middleware\ApiAuthMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,6 @@ Route::post("/account", "AccountController@store");
 Route::post("/login", "LoginController@login");
 
 
-Route::middleware(['api_auth'])->group(function() {
+Route::middleware([ApiAuthMiddleware::class])->group(function() {
     Route::get("/categories", "CategoryController@index");
 });

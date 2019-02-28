@@ -24,6 +24,7 @@ class AccountRepository extends EloquentRepository implements AccountContract
                     ->authKeys() // #TODO add ->where('valid')
                     ->orderBy('created_at', 'desc')
                     ->first();
+                    // TODO: don't assign keys by each value, do mass assignemt
                 $accountDTO = new AccountDTO();
                 $accountDTO->apiKey   = $key->hash;
                 $accountDTO->fullName = $possibleAccount->full_name; 
