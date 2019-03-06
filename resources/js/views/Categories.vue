@@ -96,8 +96,9 @@ export default {
             dialog: false,
             search: '',
             // allCategories: ['Tehnologija', 'Namirnice', 'Razno'],
-            open: ['Aktivne Kategorije'],
+            open: [],
             tree: [],
+            /*
             items: [
                 {
                     name: 'Aktivne Kategorije',
@@ -113,17 +114,67 @@ export default {
                         }
                     ]
                 }
-            ],
+            ], */
             parent: '',
             categoryName: ''
 
         }
     },
-    computed: mapState({
-        storeItems: state => this.parseAPIState(state.productCategories),
-        allCategories: state => state.productCategories.map(category => category.title)
-    }),
+    computed: { 
+        ...mapState({
+            allCategories: state => state.productCategories.map(category => category.title)
+        }),
+        items() {
+            return this.parseAPIState(this.$store.state.productCategories)
+        }
+    },
     methods: {
+        bfs(parent, items) {
+            let queue = [...items]
+            while(queue.length > 0) {
+                const item = queue.shift()
+                
+                if(item.id === parent) {
+                    return item
+                }
+
+                if(item.children) {
+                    item.children.forEach(child => queue.unshift(child))
+                }
+            }
+            return null
+        },
+        parseAPIState(categories) {
+            let failSafe = 0
+            let items = [{
+                name: 'Aktivne Kategorije',
+                children: []
+            }]
+            let categ = [...categories]
+
+            while(items.length <= categ.length) {
+                const c = categ.pop()
+                if(c.parent_category_id === null) {
+                    items[0].children.push({name: c.title, id: c.id})
+                } else {
+                    const node = this.bfs(c.parent_category_id, items)
+                    if(node) {
+                        if(node.children) {
+                            node.children.push({name: c.title, id: c.id})
+                        } else {
+                            node.children = [{name: c.title, id: c.id}]
+                        }
+                    } else {
+                        categ.unshift(c)
+                    }
+                }
+
+                failSafe++
+                if(failSafe > 500) break
+            }
+            this.open = ['Aktivne Kategorije']
+            return items
+        },
         newCategory() {
             this.dialog = false
             this.addNew(this.categoryName, this.parent)
@@ -141,34 +192,6 @@ export default {
             this.parent  = this.search
             this.search = ''
         },
-        addNew(category, parent) {
-            const queue = [...this.items[0].children];
-
-            if(parent === '') {
-                this.items[0].children = [...this.items[0].children, {name: category}]
-                return
-            }
-
-            while(queue.length > 0) {
-                let item = queue.shift()
-
-                if(item.name === parent) {
-                    if(item.children) {
-                        item.children = [...item.children, {name: category}]
-                        return
-                    } else {
-                        Vue.set(item, 'children', [{name: category}])
-                        return
-                    }
-                }
-
-                if(item.children) {
-                    item.children.forEach(child => queue.unshift(child))
-                }
-            }
-
-            this.items[0].children = [...this.items[0].children, {name: category}]
-        }
     }
 }
 </script>

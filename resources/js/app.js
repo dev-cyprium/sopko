@@ -17,6 +17,12 @@ if (token) {
     Vue.prototype.$http.defaults.headers.common['Authorization'] = token
 }
 */
+function dd( obj ) {
+    console.log(JSON.stringify(obj))
+}
+
+window.dd = dd
+
 const token = localStorage.getItem('token')
 
 if(token) {
