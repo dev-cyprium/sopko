@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use App\Models\ProductCategory;
 
 class ProductCategoryTableSeeder extends Seeder
 {
@@ -35,5 +36,23 @@ class ProductCategoryTableSeeder extends Seeder
             $category->account_id = $account_id;
             $category->save();
         });
+
+        // Add parents for some categories
+        $category4 = ProductCategory::find(4);
+        $category4->parent_id = 1;
+
+        $category5 = ProductCategory::find(5);
+        $category5->parent_id = 1;
+
+        $category6 = ProductCategory::find(6);
+        $category6->parent_id = 5;
+
+        $category7 = ProductCategory::find(7);
+        $category7->parent_id = 5;
+    
+        $category4->save();
+        $category5->save();
+        $category6->save();
+        $category7->save();
     }
 }

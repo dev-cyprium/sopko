@@ -180,7 +180,6 @@ export default {
             this.addNew(this.categoryName, this.parent)
             this.allCategories = [...this.allCategories, this.categoryName]
             
-            console.log(this.parent.length)
             if(this.parent.length > 0) 
                 this.open = [...this.open, this.parent]
             

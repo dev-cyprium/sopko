@@ -24,11 +24,12 @@ abstract class EloquentRepository implements Repository
         return $this->model->all();
     }
 
-    public function store(array $attributes)
+    public function store(array $fillables, array $trusted)
     {
-        $this->model->fill($attributes);
+        $this->model->fill($fillables);
+        $this->model->forceFill($trusted);
         $this->model->save();
-        event(new Registered($this->model));
+        // event(new Registered($this->model)); TODO: remove this event
     }
 
     function makeModel()

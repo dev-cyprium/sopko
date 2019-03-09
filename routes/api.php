@@ -16,7 +16,6 @@ use App\Http\Middleware\ApiAuthMiddleware;
 Route::post("/account", "AccountController@store");
 Route::post("/login", "LoginController@login");
 
-
-Route::middleware([ApiAuthMiddleware::class])->group(function() {
-    Route::get("/categories", "CategoryController@index");
+Route::middleware([ApiAuthMiddleware::class])->group(function() {    
+    Route::resource('/categories', 'CategoryController');
 });
