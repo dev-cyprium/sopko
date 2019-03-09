@@ -20,6 +20,7 @@ class AccountController extends ApiController
         $request->validate($this->validateCondition());
         $with_crypt = array_merge($request->all(), ['password_hash' => Hash::make($request['password'])]);
         $this->repo->store($with_crypt);
+        
         return $this->ok("Successfully registered an user");
     }
 
@@ -27,6 +28,7 @@ class AccountController extends ApiController
     {
         return [
             'company_name' => 'required|max:100',
+            'full_name'    => 'required',
             'email'        => 'required|email|unique:accounts,email|max:50',
             'password'     => 'required|min:6'
         ];

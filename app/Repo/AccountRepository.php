@@ -6,12 +6,20 @@ use App\Repo\Contracts\AccountContract;
 use App\Models\Account;
 use Illuminate\Support\Facades\Hash;
 use App\Repo\DTO\AccountDTO;
+use Illuminate\Auth\Events\Registered;
 
 class AccountRepository extends EloquentRepository implements AccountContract
 {
     function model()
     {
         return Account::class;
+    }
+
+    public function store(array $fillables, array $trusted = [])
+    {
+        parent::store($fillables, $trusted);
+        $this->model->authKeys()->create();
+        // TODO: create my own RegisteredEvent
     }
 
     public function checkCredentials(string $email, string $givenPassword, &$accountDTO) : bool

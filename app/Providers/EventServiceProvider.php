@@ -13,11 +13,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
-        Registered::class => [
-            CreateApiKey::class
-        ],
-    ];
+    protected $listen = [];
 
     /**
      * Register any events for your application.
