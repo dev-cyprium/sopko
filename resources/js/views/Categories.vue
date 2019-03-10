@@ -37,7 +37,7 @@
                                             </a>
                                         </template>
                                         <v-list class="py-0">
-                                            <v-list-tile @click="console.log('bla')">
+                                            <v-list-tile @click="edit(item)">
                                                 <v-list-tile-title>
                                                     <v-icon>edit</v-icon>
                                                     Edit
@@ -98,8 +98,8 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="error"   flat @click="dialog = false">Zatvori</v-btn>
-                <v-btn color="primary" flat @click="newCategory">Doadj Kategoriju</v-btn>
+                <v-btn color="error"   flat @click="dialog = false; editing = false; categoryName = ''">Zatvori</v-btn>
+                <v-btn color="primary" flat @click="handleDialog">{{ dialogLabel }}</v-btn>
                 </v-card-actions>
             </v-card>
             </v-dialog>
@@ -117,6 +117,7 @@ export default {
     data() {
         return {
             dialog: false,
+            editing: false,
             search: '',
             open: ['Aktivne Kategorije'],
             tree: [],
@@ -125,12 +126,23 @@ export default {
 
         }
     },
+    watch: {
+        dialog(newDialog, oldDialog) {
+            if(!newDialog && oldDialog)
+                this.editing = false
+        }
+    },
     computed: { 
         ...mapState({
             allCategories: state => state.productCategories.map(category => category.title)
         }),
         items() {
-            return this.parseAPIState(this.$store.state.productCategories)
+            const state = this.parseAPIState(this.$store.state.productCategories)
+            this.open = ['Aktivne Kategorije']
+            return state;
+        },
+        dialogLabel() {
+            return this.editing ? "Sačuvaj Izmene" : "Dodaj Kategoriju"
         }
     },
     methods: {
@@ -171,6 +183,15 @@ export default {
             }
             return {item: null, path: []}
         },
+        edit(item) {
+            if(item === 'Aktivne Kategorije') {
+                return
+            }
+
+            this.dialog  = true
+            this.editing = true
+            this.categoryName = item.name
+        },
         parseAPIState(categories) {
             let failSafe = 0
             let items = [{
@@ -200,6 +221,16 @@ export default {
                 if(failSafe > 500) break
             }
             return items
+        },
+        handleDialog() {
+            if(this.editing) {
+                this.editCategory()
+            } else {
+                this.newCategory()
+            }
+        },
+        editCategory() {
+            this.editing = false
         },
         newCategory() {
             const title = this.categoryName
