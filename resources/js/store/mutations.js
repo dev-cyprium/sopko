@@ -17,5 +17,8 @@ export default {
     },
     categories(state, categories) {
         state.productCategories = categories 
+    },
+    new_category(state, category) {
+        state.productCategories = [...state.productCategories, category]
     }
 }

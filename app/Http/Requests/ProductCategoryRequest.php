@@ -13,7 +13,7 @@ class ProductCategoryRequest extends ApiRequest
     {
         return [
             'title' => 'required',
-            'parent_id' => 'numeric'
+            'parent_category_id' => 'numeric|nullable'
         ];
     }
 }

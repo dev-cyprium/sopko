@@ -18,8 +18,8 @@
                                 :open="open"
                                 :items="items"
                                 activable
+                                transition
                                 item-key="name"
-                                open-on-click
                             >    
                                 <template v-slot:prepend="{ item, open }">
                                     <v-icon v-if="item.children" class="primary--text">
@@ -28,6 +28,29 @@
                                     <v-icon class="primary--text" v-else>
                                         filter_list
                                     </v-icon>
+                                </template>
+                                <template v-slot:label="{item}">
+                                    <v-menu offset-y>
+                                        <template v-slot:activator="{ on }">
+                                            <a color="primary" v-on="on">
+                                                {{ item.name }}
+                                            </a>
+                                        </template>
+                                        <v-list class="py-0">
+                                            <v-list-tile @click="console.log('bla')">
+                                                <v-list-tile-title>
+                                                    <v-icon>edit</v-icon>
+                                                    Edit
+                                                </v-list-tile-title>
+                                            </v-list-tile>
+                                            <v-list-tile @click="console.log('bla')" class="error white--text my-0">
+                                                <v-list-tile-title>
+                                                    <v-icon class="white--text">delete</v-icon>
+                                                    Delete
+                                                </v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
                                 </template>
                             </v-treeview>
                         </div>
@@ -95,26 +118,8 @@ export default {
         return {
             dialog: false,
             search: '',
-            // allCategories: ['Tehnologija', 'Namirnice', 'Razno'],
-            open: [],
+            open: ['Aktivne Kategorije'],
             tree: [],
-            /*
-            items: [
-                {
-                    name: 'Aktivne Kategorije',
-                    children: [
-                        {
-                            name: 'Tehnologija',
-                        },
-                        {
-                            name: 'Namirnice',
-                        },
-                        {
-                            name: 'Razno'
-                        }
-                    ]
-                }
-            ], */
             parent: '',
             categoryName: ''
 
@@ -129,20 +134,42 @@ export default {
         }
     },
     methods: {
-        bfs(parent, items) {
+        extractPath(root, meta) {
+            let path = []
+            let failSafe = 0
+            while(meta[root.id]) {
+                path.push(root.name)
+                root = meta[root.id]
+
+                failSafe++
+                if(failSafe > 500) break
+            }
+
+            return path
+        },
+        bfs(parent, items, withPath = false) {
             let queue = [...items]
+            let meta = {};
             while(queue.length > 0) {
                 const item = queue.shift()
                 
                 if(item.id === parent) {
-                    return item
+                    if(withPath) {
+                        return {item, path: this.extractPath(item, meta)}
+                    }
+                    return {item, path: []}
                 }
 
                 if(item.children) {
-                    item.children.forEach(child => queue.unshift(child))
+                    item.children.forEach(child => {
+                        if(withPath) {
+                            meta[child.id] = item
+                        }
+                        queue.unshift(child)
+                    })
                 }
             }
-            return null
+            return {item: null, path: []}
         },
         parseAPIState(categories) {
             let failSafe = 0
@@ -157,7 +184,7 @@ export default {
                 if(c.parent_category_id === null) {
                     items[0].children.push({name: c.title, id: c.id})
                 } else {
-                    const node = this.bfs(c.parent_category_id, items)
+                    const {item: node} = this.bfs(c.parent_category_id, items)
                     if(node) {
                         if(node.children) {
                             node.children.push({name: c.title, id: c.id})
@@ -172,24 +199,30 @@ export default {
                 failSafe++
                 if(failSafe > 500) break
             }
-            this.open = ['Aktivne Kategorije']
             return items
         },
         newCategory() {
-            this.dialog = false
-            this.addNew(this.categoryName, this.parent)
-            this.allCategories = [...this.allCategories, this.categoryName]
+            const title = this.categoryName
+            const parent_category_id = this.$store.getters.categoryID(this.parent)
             
-            if(this.parent.length > 0) 
-                this.open = [...this.open, this.parent]
-            
-            this.categoryName = ''
-            this.parent = ''
+            this.$store.dispatch('new_category', {title, parent_category_id})
+                .then(() => {
+                    if(this.parent.length > 0) {
+                        const {path} = this.bfs(parent_category_id, this.items, true)
+                        path.forEach(elem => this.open.push(elem))
+                    }
+                    
+                    this.categoryName = ''
+                    this.parent = ''
+                })
         },
         handleAddNew() {
-            this.allCategories = [...this.allCategories, this.search]
-            this.parent  = this.search
-            this.search = ''
+            const title = this.search
+            const parent_category_id = null;
+            this.$store.dispatch('new_category', {title, parent_category_id})
+            .then(() => {
+                this.parent = title
+            })
         },
     }
 }

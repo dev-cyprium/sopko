@@ -17,7 +17,9 @@ class CategoryController extends ApiController
 
     public function store(ProductCategoryRequest $request, CategoryContract $categoryProvider) 
     {
-        $categoryProvider->store($request->all(), ['account_id' => Sopko::get('account')->id]);
-        return $this->ok('Successfully added new category');
+        $parent_id = $request->input('parent_category_id');
+        $title = $request->input('title');
+        $category = $categoryProvider->store(compact(['parent_id', 'title']), ['account_id' => Sopko::get('account')->id]);
+        return $this->ok('Successfully added new category', compact('category'));
     }
 }

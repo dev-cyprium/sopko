@@ -12,5 +12,5 @@ namespace App\Repo\Contracts;
       public function getAll();
 
 
-      public function store(array $attributes, array $trusted);
+      public function store(array $attributes, array $trusted) : object;
   }

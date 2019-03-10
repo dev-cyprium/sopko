@@ -2,6 +2,9 @@
 
 namespace App\Repo\DTO;
 
+use App\Models\ProductCategory;
+
+
 abstract class BaseDTO 
 {
     /**
@@ -18,5 +21,11 @@ abstract class BaseDTO
         }
 
         return $fields;
+    }
+
+    public static function intoDTO($modelInstance)
+    {
+        $factory = Factory::make();
+        return $factory->intoDTO($modelInstance);
     }
 }

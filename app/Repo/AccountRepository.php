@@ -15,11 +15,12 @@ class AccountRepository extends EloquentRepository implements AccountContract
         return Account::class;
     }
 
-    public function store(array $fillables, array $trusted = [])
+    public function store(array $fillables, array $trusted = []) : object
     {
-        parent::store($fillables, $trusted);
+        $ret = parent::store($fillables, $trusted);
         $this->model->authKeys()->create();
         // TODO: create my own RegisteredEvent
+        return $ret;
     }
 
     public function checkCredentials(string $email, string $givenPassword, &$accountDTO) : bool

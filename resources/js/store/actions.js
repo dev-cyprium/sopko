@@ -35,5 +35,15 @@ export default {
                 resolve()
             })
         })
+    },
+    new_category({commit}, category) {
+        return new Promise((resolve) => {
+            axios({url: '/api/categories',  data: category, method: 'POST'})
+            .then(resp => {
+                commit('new_category', resp.data.category)
+                resolve()
+            })
+            .catch( err => console.log(err) )
+        })
     }
 }
