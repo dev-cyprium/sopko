@@ -255,6 +255,9 @@ export default {
                 this.parent = title
             })
         },
+        handleCategoryDelete() {
+            
+        }
     }
 }
 </script>

@@ -13,4 +13,6 @@ namespace App\Repo\Contracts;
 
 
       public function store(array $attributes, array $trusted) : object;
+
+      public function destroy($id);
   }

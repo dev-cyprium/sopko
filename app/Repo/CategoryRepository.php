@@ -14,6 +14,17 @@ class CategoryRepository extends EloquentRepository implements CategoryContract
     {
         return ProductCategory::class;
     }
+    
+    private $log;
+
+    /**
+     * We need to override parent destroy
+     * because of recursive deletion
+     */
+    public function destroy($id)
+    {
+        $this->recursiveDelete($this->model->find($id));
+    }
 
     public function fetchAccountCategories(Account $account) : CategoryCollectionDTO
     {
@@ -29,5 +40,16 @@ class CategoryRepository extends EloquentRepository implements CategoryContract
             $dtos[] = $dto; 
         }
         return new CategoryCollectionDTO($dtos);
+    }
+
+    private function recursiveDelete($category) 
+    {
+        if($category->subCategories) {
+            foreach($category->subCategories as $c) {
+                $this->recursiveDelete($c);
+            }
+        }
+        
+        $category->delete();
     }
 }

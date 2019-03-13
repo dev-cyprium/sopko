@@ -12,6 +12,10 @@ abstract class EloquentRepository implements Repository
 {
     private $app;
 
+    /**
+     * The eloquent model to work with
+     * @var Illuminate\Database\Eloquent\Model;
+     */
     protected $model;
 
     public function __construct(Application $app)
@@ -31,6 +35,12 @@ abstract class EloquentRepository implements Repository
         $this->model->forceFill($trusted);
         $this->model->save();
         return BaseDTO::intoDTO($this->model);
+    }
+
+    public function destroy($id)
+    {
+        $entity = $this->model->find($id);
+        $entity->delete();
     }
 
     function makeModel()

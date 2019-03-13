@@ -9,17 +9,34 @@ use App\Http\Requests\ProductCategoryRequest;
 
 class CategoryController extends ApiController
 {
-    public function index(CategoryContract $categoryProvider)
+    /**
+     * The provider for category related database operations
+     * @var CategoryContract
+     */
+    protected $categoryProvider;
+
+    public function __construct(CategoryContract $categoryProvider)
     {
-        $categories = $categoryProvider->fetchAccountCategories(Sopko::get('account'));
+        $this->categoryProvider = $categoryProvider;
+    }
+
+    public function index()
+    {
+        $categories = $this->categoryProvider->fetchAccountCategories(Sopko::get('account'));
         return $this->ok('Categories retreived', $categories->serialize());
     }
 
-    public function store(ProductCategoryRequest $request, CategoryContract $categoryProvider) 
+    public function store(ProductCategoryRequest $request) 
     {
         $parent_id = $request->input('parent_category_id');
         $title = $request->input('title');
-        $category = $categoryProvider->store(compact(['parent_id', 'title']), ['account_id' => Sopko::get('account')->id]);
+        $category = $this->categoryProvider->store(compact(['parent_id', 'title']), ['account_id' => Sopko::get('account')->id]);
         return $this->ok('Successfully added new category', compact('category'));
+    }
+
+    public function destroy($id)
+    {
+        $this->categoryProvider->destroy($id);
+        return $this->ok('Successfully deleted category');
     }
 }
