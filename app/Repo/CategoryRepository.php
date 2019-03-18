@@ -15,7 +15,6 @@ class CategoryRepository extends EloquentRepository implements CategoryContract
         return ProductCategory::class;
     }
     
-    private $log;
 
     /**
      * We need to override parent destroy
