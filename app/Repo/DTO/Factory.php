@@ -3,14 +3,17 @@
 namespace App\Repo\DTO;
 
 use App\Models\ProductCategory;
+use App\Models\Image;
 
-
+/* TODO: Rename Factory to mapper
+   TODO: Change function names to static */
 class Factory
 {
     private static $instance = null;
 
     protected $bindings = [
-        ProductCategory::class => 'productCategory'
+        ProductCategory::class => 'productCategory',
+        Image::class => 'image',
     ];
 
     public static function make()
@@ -38,6 +41,13 @@ class Factory
         $dto->id = $model->id;
         $dto->parent_category_id = $model->parent_id;
         $dto->title = $model->title;
+        return $dto;
+    }
+
+    private function image($model) {
+        $dto = new ImageDTO;
+        $dto->path = 'storage/' . $model->path;
+        $dto->created_at = $model->created_at;
         return $dto;
     }
 }

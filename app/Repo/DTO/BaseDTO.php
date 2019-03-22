@@ -20,6 +20,7 @@ abstract class BaseDTO
             $fields[$name] = $prop->getValue($this);
         }
 
+        
         return $fields;
     }
 

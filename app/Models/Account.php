@@ -42,4 +42,12 @@ class Account extends Model
     {
         return $this->hasMany(ProductCategory::class);
     }
+
+    /**
+     * Get all the images that belong to this account
+     */
+    public function images() 
+    {
+        return $this->hasMany(Image::class);
+    }
 }

@@ -15,9 +15,13 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->unsignedInteger('account_id');
             $table->string('path', 300);
             $table->timestamps();
+            $table->foreign('account_id')
+                ->references('id')
+                ->on('accounts');
         });
 
         Schema::create('imaggables', function (Blueprint $table) {
