@@ -4,6 +4,7 @@ import Login from './views/Login'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
 import Categories from './views/Categories'
+import Images from './views/Images'
 import store from './store'
 
 Vue.use(Router)
@@ -32,7 +33,18 @@ let router = new Router({
         {
             path: '/categories',
             name: 'categories',
-            component: Categories
+            component: Categories,
+            meta: {
+                requireAuth: true
+            }
+        },
+        {
+            path: '/images_manage',
+            name: 'images',
+            component: Images,
+            meta: {
+                requireAuth: true
+            }
         }
     ]
 })
