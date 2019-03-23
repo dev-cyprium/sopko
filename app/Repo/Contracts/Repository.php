@@ -12,7 +12,9 @@ namespace App\Repo\Contracts;
       public function getAll();
 
 
-      public function store(array $attributes, array $trusted) : object;
+      public function store(array $attributes, array $trusted = []) : object;
 
       public function destroy($id);
+
+      public function setModel($id);
   }

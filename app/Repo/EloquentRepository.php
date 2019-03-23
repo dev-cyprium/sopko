@@ -29,6 +29,12 @@ abstract class EloquentRepository implements Repository
         return $this->model->all();
     }
 
+    public function setModel($id) 
+    {
+        $entity = $this->model->find($id);
+        $this->model = $entity;
+    }
+
     public function store(array $fillables, array $trusted = []) : object
     {
         $this->model->fill($fillables);
