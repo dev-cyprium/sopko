@@ -43,7 +43,7 @@
                                                     Edit
                                                 </v-list-tile-title>
                                             </v-list-tile>
-                                            <v-list-tile @click="console.log('bla')" class="error white--text my-0">
+                                            <v-list-tile @click="handleCategoryDelete(item)" class="error white--text my-0">
                                                 <v-list-tile-title>
                                                     <v-icon class="white--text">delete</v-icon>
                                                     Delete
@@ -270,8 +270,8 @@ export default {
                 this.parent = title
             })
         },
-        handleCategoryDelete() {
-            
+        handleCategoryDelete({id}) {
+            this.$store.dispatch('delete_category', id)
         }
     }
 }

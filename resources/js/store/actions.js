@@ -55,5 +55,15 @@ export default {
                 })
                 .catch( err => console.log(err))
         })
+    },
+    delete_category({commit, dispatch}, id) {
+        return new Promise((resolve) => {
+            axios({url: `/api/categories/${id}`, method: 'DELETE'})
+                .then(resp => {
+                    dispatch('categories')
+                    resolve()
+                })
+                .catch(err => console.log(err))
+        })
     }
 }
