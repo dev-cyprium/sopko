@@ -122,8 +122,8 @@ export default {
             open: ['Aktivne Kategorije'],
             tree: [],
             parent: '',
-            categoryName: ''
-
+            categoryName: '',
+            editCategoryText: ''
         }
     },
     watch: {
@@ -191,6 +191,7 @@ export default {
             this.dialog  = true
             this.editing = true
             this.categoryName = item.name
+            this.editCategoryText = item.name
         },
         parseAPIState(categories) {
             let failSafe = 0
@@ -230,7 +231,21 @@ export default {
             }
         },
         editCategory() {
-            this.editing = false
+            let data = {};
+            const id = this.$store.getters.categoryID(this.editCategoryText)
+            data.title = this.categoryName
+            if(this.parent !== '') {
+                data.parent_category_id = this.$store.getters.categoryID(this.parent)
+            } else {
+                data.parent_category_id = null;
+            }
+            
+            this.editCategoryText = ''
+            this.$store.dispatch('update_category', {data, id}).then(() => {
+                this.dialog = false
+                this.editing = false
+                this.parent = ''
+            });
         },
         newCategory() {
             const title = this.categoryName

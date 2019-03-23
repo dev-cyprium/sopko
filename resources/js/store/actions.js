@@ -45,5 +45,15 @@ export default {
             })
             .catch( err => console.log(err) )
         })
+    },
+    update_category({commit, dispatch}, {data, id}) {
+        return new Promise((resolve) => {
+            axios({url: `/api/categories/${id}`, data, method: 'PUT'})
+                .then(resp => {
+                    dispatch('categories')
+                    resolve()
+                })
+                .catch( err => console.log(err))
+        })
     }
 }
