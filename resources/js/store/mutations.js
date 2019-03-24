@@ -20,5 +20,8 @@ export default {
     },
     new_category(state, category) {
         state.productCategories = [...state.productCategories, category]
-    }
+    },
+    images(state, images) {
+        state.images = images
+    },
 }

@@ -83,9 +83,11 @@ export default {
         doFileUpload() {
             let reader = new FileReader()
             reader.onload = () => {
-                this.$store.dispatch('new_image', {contentType: this.file.type, binary: reader.result})
+                const bytes = new Uint8Array(reader.result)
+                this.$store.dispatch('new_image', {contentType: this.file.type, binary: bytes});
             }
-            reader.readAsBinaryString(this.file)
+            
+            reader.readAsArrayBuffer(this.file)
         }
     }
 }

@@ -2,7 +2,7 @@
     <v-container fluid>
         <h1 class="title grey--text font-weight-light mb-3">Slike proizvoda</h1>
         <v-layout>
-            <v-flex xs12 sm10 offset-sm1>
+            <v-flex xs12>
                 <v-card>
                     <v-card-title primary-title>
                         <h3 class="headline">Upravljanje slikama proizvoda</h3>
@@ -14,15 +14,15 @@
                     <v-container fluid>
                         <v-layout row wrap>
                             <v-flex
-                            v-for="n in 9"
-                            :key="n"
-                            xs4
+                            v-for="image in images"
+                            :key="image.path"
+                            xs3
                             d-flex
                             >
                             <v-card flat tile class="d-flex py-1 px-1">
                                 <v-img
-                                :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
-                                :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+                                :src="image.path"
+                                :lazy-src="image.path"
                                 
                                 class="grey lighten-2"
                                 >
@@ -92,10 +92,16 @@ import FileUpload from '../components/FileUpload';
 
 export default {
     components: {FileUpload},
+    created() {
+        this.$store.dispatch('images')
+    },
     data() {
         return {
-            dialog: true
+            dialog: false
         }
+    },
+    computed: {
+       images() { return this.$store.state.images }
     },
     methods: {
         handleDodaj() {

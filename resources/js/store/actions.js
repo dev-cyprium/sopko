@@ -66,7 +66,16 @@ export default {
                 .catch(err => console.log(err))
         })
     },
-    new_image({commit}, {contentType, binary}) {
+    images({commit}) {
+        return new Promise((resolve) => {
+            axios({url: '/api/images', method: 'GET'})
+                .then(resp => {
+                    commit('images', resp.data.images)
+                    resolve()
+                })
+        })
+    },
+    new_image({commit, dispatch}, {contentType, binary}) {
         return new Promise((resolve) => {
             axios({
                 headers: {"Content-Type": contentType},
@@ -75,7 +84,8 @@ export default {
                 data: binary
             })
             .then(resp => {
-                console.log(resp)
+                dispatch('images')
+                resolve()
             })
             .catch(err => console.log(err))
         })
