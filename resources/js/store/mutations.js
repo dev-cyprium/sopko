@@ -24,4 +24,7 @@ export default {
     images(state, images) {
         state.images = images
     },
+    remove_image(state, hash) {
+        state.images = state.images.filter(img => img.hash != hash)
+    }
 }

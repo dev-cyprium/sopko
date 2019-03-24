@@ -70,12 +70,17 @@ export default {
         return new Promise((resolve) => {
             axios({url: '/api/images', method: 'GET'})
                 .then(resp => {
-                    commit('images', resp.data.images)
+                    const images =  resp.data.images.map(img => ({
+                        ...img,
+                        hash: img.path.split('/')[1]
+                    }))
+
+                    commit('images', images)
                     resolve()
                 })
         })
     },
-    new_image({commit, dispatch}, {contentType, binary}) {
+    new_image({dispatch}, {contentType, binary}) {
         return new Promise((resolve) => {
             axios({
                 headers: {"Content-Type": contentType},
@@ -88,6 +93,16 @@ export default {
                 resolve()
             })
             .catch(err => console.log(err))
+        })
+    },
+    delete_image({commit}, hash) {
+        return new Promise(resolve => {
+            axios({url: `/api/images/${hash}`, method: 'DELETE'})
+                .then(resp => {
+                    commit('remove_image', hash)
+                    resolve()
+                })
+                .catch(err => console.log(err))
         })
     }
 }

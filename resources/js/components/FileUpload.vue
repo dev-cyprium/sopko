@@ -81,13 +81,20 @@ export default {
                 }
         },
         doFileUpload() {
-            let reader = new FileReader()
-            reader.onload = () => {
-                const bytes = new Uint8Array(reader.result)
-                this.$store.dispatch('new_image', {contentType: this.file.type, binary: bytes});
-            }
+            return new Promise(resolve => {
+                let reader = new FileReader()
+                reader.onload = () => {
+                    const bytes = new Uint8Array(reader.result)
+                    this.$store.dispatch('new_image', {contentType: this.file.type, binary: bytes})
+                        .then(() => { 
+                            this.file = null
+                            this.src = ''
+                            resolve() 
+                        })
+                }
             
-            reader.readAsArrayBuffer(this.file)
+                reader.readAsArrayBuffer(this.file)
+            })
         }
     }
 }

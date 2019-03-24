@@ -9,7 +9,7 @@
                         <v-spacer />
                         <div class="sp-d-flex justify-content-end">
                             <v-btn v-if="selectedImages.length == 0" @click="dialog = true" class="skip-flex primary">Nova Slika</v-btn>
-                            <v-btn v-else class="skip-flex error" >Obriši {{ selectedImages.length }}</v-btn>
+                            <v-btn v-else class="skip-flex error" @click="deleteItems" >Obriši {{ selectedImages.length }}</v-btn>
                         </div>
                     </v-card-title>
                     <v-container fluid>
@@ -51,33 +51,69 @@
             v-model="dialog"
             width="500"
             >
-                <v-card>
-                    <v-card-title
-                    class="headline"
-                    primary-title
-                    >
-                        Dodajte Sliku
-                        <h4 class="title grey--text font-weight-light mt-2 mb-1">(Postoji mogućnost prevlačenja slike)</h4>
-                    </v-card-title>
+            <v-card>
+                <v-card-title
+                class="headline"
+                primary-title
+                >
+                    Dodajte Sliku
+                    <h4 class="title grey--text font-weight-light mt-2 mb-1">(Postoji mogućnost prevlačenja slike)</h4>
+                </v-card-title>
 
-                    <v-card-text>
-                        <FileUpload ref="fileupload" />
-                    </v-card-text>
+                <v-card-text>
+                    <FileUpload ref="fileupload" />
+                </v-card-text>
 
-                    <v-divider></v-divider>
+                <v-divider></v-divider>
 
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="primary"
-                        flat
-                        @click="handleDodaj"
-                    >
-                        Dodaj sliku
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="primary"
+                    flat
+                    @click="handleDodaj"
+                >
+                    Dodaj sliku
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog
+            v-model="deletingProgress"
+            width="500"
+            persistent
+            >
+            <v-card>
+                <v-card-title
+                class="headline"
+                primary-title
+                >
+                    Brisanje u toku
+                </v-card-title>
+
+                <v-card-text>
+                    <div class="text-xs-center">
+                        <v-progress-circular
+                        :rotate="90"
+                        :size="100"
+                        :width="15"
+                        :value="progressPercent"
+                        color="red"
+                        >
+                        {{ progress }} / {{ totalItems }}
+                        </v-progress-circular>
+                    </div>
+                </v-card-text>
+
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                    <v-btn color="error" flat>
+                        Zaustavi
                     </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -108,11 +144,15 @@ export default {
     data() {
         return {
             dialog: false,
-            selectedImages: []
+            deletingProgress: false,
+            selectedImages: [],
+            progress: 0,
+            progressPercent: 0
         }
     },
     computed: {
-       images() { return this.$store.state.images }
+       images() { return this.$store.state.images },
+       totalItems() { return this.selectedImages.length }
     },
     methods: {
         handleDodaj() {
@@ -125,7 +165,25 @@ export default {
             } else {
                 this.selectedImages = this.selectedImages.filter(item => item != path)
             } 
+        },
+        deleteItems() {
+            this.deletingProgress = true
+            this.progress = 0
+            this.selectedImages.forEach(imagePath => {
+                const hash = imagePath.split('/')[1];
+                this.$store.dispatch('delete_image', hash)
+                    .then(() => { 
+                        this.progress++;
+                        this.progressPercent = Math.floor((this.progress / this.totalItems) * 100)
+
+                        if(this.progress === this.totalItems) {
+                            this.selectedImages = []
+                            this.deletingProgress = false
+                        }
+                     })
+            })   
         }
+
     }
 }
 </script>
