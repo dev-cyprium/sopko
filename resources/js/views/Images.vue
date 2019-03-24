@@ -2,10 +2,10 @@
     <v-container fluid>
         <h1 class="title grey--text font-weight-light mb-3">Slike proizvoda</h1>
         <v-layout>
-            <v-flex>
+            <v-flex xs12 sm10 offset-sm1>
                 <v-card>
                     <v-card-title primary-title>
-                        <h3 class="headline">Slike Proizvoda</h3>
+                        <h3 class="headline">Upravljanje slikama proizvoda</h3>
                         <v-spacer />
                         <div class="sp-d-flex justify-content-end">
                             <v-btn @click="dialog = true" class="skip-flex primary">Nova Slika</v-btn>
@@ -23,7 +23,7 @@
                                 <v-img
                                 :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
                                 :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
-                                width="300"
+                                
                                 class="grey lighten-2"
                                 >
                                 <template v-slot:placeholder>
@@ -49,29 +49,17 @@
             v-model="dialog"
             width="500"
             >
-                <template v-slot:activator="{ on }">
-                    <v-btn
-                        color="red lighten-2"
-                        dark
-                        v-on="on"
-                    >
-                    Click Me
-                    </v-btn>
-                </template>
-
                 <v-card>
                     <v-card-title
                     class="headline"
                     primary-title
                     >
-                    Dodajte Sliku
+                        Dodajte Sliku
+                        <h4 class="title grey--text font-weight-light mt-2 mb-1">(Postoji mogućnost prevlačenja slike)</h4>
                     </v-card-title>
 
                     <v-card-text>
-                        <v-layout class="file-upload" fill-height align-center justify-center>
-                            <v-icon x-large>cloud_upload</v-icon>
-                            <h3 class="ml-2">Upload a file</h3>
-                        </v-layout>
+                        <FileUpload ref="fileupload" />
                     </v-card-text>
 
                     <v-divider></v-divider>
@@ -81,9 +69,9 @@
                     <v-btn
                         color="primary"
                         flat
-                        @click="dialog = false"
+                        @click="handleDodaj"
                     >
-                        I accept
+                        Dodaj sliku
                     </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -100,10 +88,19 @@
 
 
 <script>
+import FileUpload from '../components/FileUpload';
+
 export default {
+    components: {FileUpload},
     data() {
         return {
-            dialog: false
+            dialog: true
+        }
+    },
+    methods: {
+        handleDodaj() {
+            this.dialog = false
+            this.$refs.fileupload.doFileUpload()
         }
     }
 }

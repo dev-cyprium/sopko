@@ -65,5 +65,19 @@ export default {
                 })
                 .catch(err => console.log(err))
         })
+    },
+    new_image({commit}, {contentType, binary}) {
+        return new Promise((resolve) => {
+            axios({
+                headers: {"Content-Type": contentType},
+                url: `/api/images`, 
+                method: 'POST', 
+                data: binary
+            })
+            .then(resp => {
+                console.log(resp)
+            })
+            .catch(err => console.log(err))
+        })
     }
 }
