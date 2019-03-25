@@ -10,6 +10,7 @@ use App\Repo\Contracts\CategoryContract;
 use App\Repo\CategoryRepository;
 use App\Repo\Contracts\ImageContract;
 use App\Repo\ImageRepository;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        
     }
 }
