@@ -4,6 +4,7 @@ namespace App\Repo\DTO;
 
 use App\Models\ProductCategory;
 use App\Models\Image;
+use App\Models\Account;
 
 /* TODO: Rename Factory to mapper
    TODO: Change function names to static */
@@ -14,6 +15,7 @@ class Factory
     protected $bindings = [
         ProductCategory::class => 'productCategory',
         Image::class => 'image',
+        Account::class => 'account'
     ];
 
     public static function make()
@@ -41,6 +43,18 @@ class Factory
         $dto->id = $model->id;
         $dto->parent_category_id = $model->parent_id;
         $dto->title = $model->title;
+        return $dto;
+    }
+
+    private function account($model)
+    {
+        $dto = new AccountDTO;
+        $dto->apiKey = $model
+                ->authKeys() // #TODO add ->where('valid')
+                ->orderBy('created_at', 'desc')
+                ->first()
+                ->hash;
+        $dto->fullName = $model->full_name;
         return $dto;
     }
 

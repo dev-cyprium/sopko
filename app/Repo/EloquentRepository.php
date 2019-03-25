@@ -40,6 +40,7 @@ abstract class EloquentRepository implements Repository
         $this->model->fill($fillables);
         $this->model->forceFill($trusted);
         $this->model->save();
+        $this->afterStore();
         return BaseDTO::intoDTO($this->model);
     }
 
@@ -53,6 +54,11 @@ abstract class EloquentRepository implements Repository
     {
         $this->model = $this->app->make($this->model());
     }
+
+    /**
+     * Before store is empty by default
+     */
+    protected function afterStore() {}
 
     abstract function model();
 }

@@ -72,6 +72,13 @@
                                                 type="text"
                                             />
                                             <v-text-field 
+                                                v-model="companyName"
+                                                :rules="companyNameRules"
+                                                prepend-icon="location_city"
+                                                label="Kompanija"
+                                                type="text"
+                                            />
+                                            <v-text-field 
                                                 v-model="fullName"
                                                 :rules="fullNameRules"
                                                 prepend-icon="person"
@@ -86,7 +93,7 @@
                                         Kreni sa API integracijom
                                         <v-icon right dark>public</v-icon>
                                     </v-btn>
-                                    <v-btn block class="success mt-4">
+                                    <v-btn @click="handleWebClick" block class="success mt-4">
                                         Kreni sa WEB integracijom
                                         <v-icon right dark>perm_media</v-icon>
                                     </v-btn>
@@ -131,6 +138,10 @@ export default {
         fullName: '',
         fullNameRules: [
             v => !!v || 'Puno Ime polje je obavezno'
+        ],
+        companyName: '',
+        companyNameRules: [
+            v => !!v || 'Ime kompanije je obavezno'
         ]
     }),
     methods: {
@@ -144,7 +155,29 @@ export default {
             if(this.valid) {
                 this.valid = false;
                 this.el +=  1
+
+                if(this.el === 3) {
+                    const payload = {
+                        company_name: this.companyName,
+                        email: this.email,
+                        password: this.password,
+                        full_name: this.fullName,
+                    }
+
+                    if(this.telephone1 !== '') {
+                        payload.telephone1 = this.telephone1
+                    }
+
+                    if(this.telephone2 !== '') {
+                        payload.telephone2 = this.telephone2
+                    }
+
+                    this.$store.dispatch('register', payload)
+                }
             }
+        },
+        handleWebClick() {
+            this.$router.push('/categories')
         }
     }
 }

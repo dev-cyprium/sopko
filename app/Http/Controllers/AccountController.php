@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Repo\AccountRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Repo\DTO\BaseDTO;
 
 class AccountController extends ApiController
 {
     protected $repo;
 
+    // TODO: change to contract instead of repositoy
     public function __construct(AccountRepository $repo)
     {
         $this->repo = $repo;
@@ -19,9 +21,8 @@ class AccountController extends ApiController
     {
         $request->validate($this->validateCondition());
         $with_crypt = array_merge($request->all(), ['password_hash' => Hash::make($request['password'])]);
-        $this->repo->store($with_crypt);
-        
-        return $this->ok("Successfully registered an user");
+        $user = $this->repo->store($with_crypt);
+        return $this->ok("Successfully registered an user", $user->serialize());
     }
 
     private function validateCondition() 

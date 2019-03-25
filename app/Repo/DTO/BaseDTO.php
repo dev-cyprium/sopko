@@ -24,6 +24,10 @@ abstract class BaseDTO
         return $fields;
     }
 
+    /**
+     * Returns a DTO instance for a given Eloquent object
+     * @return BaseDTO
+     */
     public static function intoDTO($modelInstance)
     {
         $factory = Factory::make();

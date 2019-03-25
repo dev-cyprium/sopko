@@ -27,6 +27,19 @@ export default {
             resolve()
         })
     },
+    register({commit}, user) {
+        return new Promise((resolve, reject) => {
+            commit('auth_request')
+            axios({url: '/api/account', data: user, method: 'POST'})
+            .then(resp => {
+                const {apiKey, fullName} = resp.data
+                localStorage.setItem('token', apiKey)
+                axios.defaults.headers.common['Authorization'] = apiKey
+                commit('auth_success', apiKey, fullName)
+                resolve(resp)
+            })
+        })
+    },
     categories({commit}) {
         return new Promise((resolve) => {
             axios({url: '/api/categories', method: 'GET'})
