@@ -24,4 +24,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Storage::class, 'product_storages');
     }
+
+    public function sales() 
+    {
+        return $this->hasMany(Sale::class);
+    }
 }

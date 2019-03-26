@@ -3,21 +3,15 @@
 namespace App\Repo;
 
 use App\Models\Image;
-use App\Repo\Contracts\ImageContract;
-use App\Models\Account;
-use App\Repo\DTO\BaseDTO;
-use App\Repo\DTO\ImageCollectionDTO;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Product;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Facades\Sopko;
 use App\Models\Storage;
+use Carbon\Carbon;
 
 // TODO: add interface
 class ProductRepository extends EloquentRepository
 {
-    protected $cachedModel;
-
     public function model() 
     {
         return Product::class;
@@ -57,5 +51,23 @@ class ProductRepository extends EloquentRepository
         $storage = Storage::find($idStorage);
         // TODO: check if storage belongs to account
         $this->model->storages()->attach($storage, compact('quantity'));
+    }
+
+    public function bindSales(array $sales) 
+    {
+        $sales = collect($sales)
+            ->map(function($sale) {   
+                $stat_date = Carbon::createFromFormat("Y-m-d", $sale['from']);
+                $end_date  = Carbon::createFromFormat("Y-m-d", $sale['to']);
+                $percent = $sale['percent'] ?? null;
+                $value   = $sale['value']   ?? null;
+
+                return $this->model
+                    ->sales()
+                    ->make(compact('percent', 'value', 'start_date', 'end_date'));
+            });
+
+
+        $this->model->sales()->saveMany($sales);
     }
 }
