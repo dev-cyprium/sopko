@@ -18,6 +18,7 @@ class CreateAccountsTable extends Migration
             $table->string('company_name');
             $table->string('email')->unique();
             $table->string('password_hash');
+            $table->string('salt')->unique();
             $table->timestamps();
         });
     }

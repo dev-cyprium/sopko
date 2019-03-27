@@ -14,13 +14,13 @@ class CreateUserGroupsTable extends Migration
     public function up()
     {
         Schema::create('user_groups', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('slug');
             $table->string('label');
-            $table->text('description');
             $table->unsignedInteger('account_id');
             $table->foreign('account_id')
                 ->references('id')
                 ->on('accounts');
+            $table->primary('slug');
             $table->timestamps();
         });
     }

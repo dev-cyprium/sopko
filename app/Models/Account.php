@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Account extends Model
 {
@@ -17,6 +18,18 @@ class Account extends Model
     protected $fillable = [
         'email', 'company_name', 'password_hash', 'telephone_1', 'telephone_2', 'full_name'
     ];
+
+    /**
+     * We need to create a unique salt when making a model
+     * for a company
+     */
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model) {
+            $model->salt = uniqid("", true);
+        });
+    }
 
     /**
      * The attributes that should be hidden for arrays.

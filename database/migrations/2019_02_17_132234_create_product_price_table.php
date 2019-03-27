@@ -17,10 +17,13 @@ class CreateProductPriceTable extends Migration
             $table->increments('id');
             $table->decimal('price', 10, 2);
             $table->unsignedInteger('product_id');
-            $table->unsignedInteger('group_id')->nullable();
+            $table->string('group_slug')->nullable();
             $table->foreign('product_id')
                   ->references('id')
                   ->on('products');
+            $table->foreign('group_slug')
+                  ->references('slug')
+                  ->on('user_groups');
             $table->timestamps();
         });
     }
