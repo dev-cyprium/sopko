@@ -28,10 +28,9 @@ class ProductRequest extends ApiRequest
             "sales.*.value"   => "required_without:sales.*.percent|numeric",
             "price_groups" => "sometimes|array",
             "price_groups.*.price" => "required|numeric",
-            "price_groups.*.group_id" => "required_without:price_groups.*.group|numeric",
-            "price_groups.*.group" => "required_without:price_groups.*.group_id",
+            "price_groups.*.group_name" => "required_without:price_groups.*.group|string",
+            "price_groups.*.group" => "required_without:price_groups.*.group_name",
             "price_groups.*.group.label" => "required_with:price_groups.*.group",
-            "price_groups.*.group.description" => "sometimes|string|min:5|max:100",
         ];
         
         return $rules;

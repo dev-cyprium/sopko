@@ -39,10 +39,10 @@ class ProductRepository extends EloquentRepository
         $this->model->save();
     }
 
-    public function newPrice(int $price, int $group_id = null)
+    public function newPrice(int $price, string $slug = null)
     {
         $price = $this->model->prices()->make(compact('price'));
-        $price->group_id = null;
+        $price->group_slug = $slug;
         $price->save();
     }   
 
@@ -57,7 +57,7 @@ class ProductRepository extends EloquentRepository
     {
         $sales = collect($sales)
             ->map(function($sale) {   
-                $stat_date = Carbon::createFromFormat("Y-m-d", $sale['from']);
+                $start_date = Carbon::createFromFormat("Y-m-d", $sale['from']);
                 $end_date  = Carbon::createFromFormat("Y-m-d", $sale['to']);
                 $percent = $sale['percent'] ?? null;
                 $value   = $sale['value']   ?? null;
@@ -69,5 +69,29 @@ class ProductRepository extends EloquentRepository
 
 
         $this->model->sales()->saveMany($sales);
+    }
+
+    public function bindUserGroups(array $groups)
+    {
+        $account = Sopko::get('account');  
+        collect($groups)
+            ->map(function($data) use ($account) {
+                if(array_key_exists('group', $data)) {
+                    $label = $data['group']['label'];
+                    $slug  = md5($account->salt . $label);
+
+                    $account->userGroups()->create(compact('slug', 'label'));
+                    return [
+                        'group_name' => $label,
+                        'price' => $data['price'],
+                    ];
+                }
+
+                return $data;
+            })
+            ->each(function ($group_with_names) use ($account) {
+                $slug = md5($account->salt . $group_with_names['group_name']);
+                $this->newPrice($group_with_names['price'], $slug);
+            });
     }
 }

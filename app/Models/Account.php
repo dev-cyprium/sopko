@@ -63,4 +63,12 @@ class Account extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+    /**
+     * Get all the user groups that belong to this account
+     */
+    public function userGroups() 
+    {
+        return $this->hasMany(UserGroup::class);
+    }
 }

@@ -12,7 +12,7 @@ class UserGroup extends Model
 {
     protected $primaryKey = "slug";
     protected $fillable = [
-        'slug', 'label', 'account_id'
+        'slug', 'label' 
     ];
     
     public $incrementing = false;
