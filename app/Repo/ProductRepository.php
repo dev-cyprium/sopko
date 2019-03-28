@@ -13,6 +13,7 @@ use App\Repo\DTO\ProductCollectionDTO;
 use App\Repo\Contracts\ProductContract;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 // TODO: add interface
 class ProductRepository extends EloquentRepository implements ProductContract
@@ -30,7 +31,7 @@ class ProductRepository extends EloquentRepository implements ProductContract
             ->get();
         
         if(count($imageHashs) !== $images->count()) {
-            throw new AuthorizationException("You don't have access to the given images (or they don't exist)");
+            throw new ModelNotFoundException("The image you're looking for doesn't exist");
         }
 
         $images->each(function(&$image) { 
