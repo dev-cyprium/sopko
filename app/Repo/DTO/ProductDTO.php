@@ -46,5 +46,7 @@ final class ProductDTO extends BaseDTO
      * @var string
      */
     public $brand;
+
+    public $arr = [1,2,3];
 }
 

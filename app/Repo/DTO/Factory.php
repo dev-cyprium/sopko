@@ -20,6 +20,8 @@ class Factory
         Product::class => 'product',
     ];
 
+    protected $flags;
+
     public static function make()
     {
         if(self::$instance === null) {
@@ -28,13 +30,15 @@ class Factory
         return self::$instance;
     }
 
-    public function intoDTO($modelInstance, string $class = null) {
+    public function intoDTO($modelInstance, string $class = null, array $flags = []) {
         if(!$class) {
             $class = get_class($modelInstance);
         }
 
         if(array_key_exists($class, $this->bindings)) {
             $method = $this->bindings[$class];
+            
+            $this->flags = $flags;
             return $this->{$method}($modelInstance);
         } else {
             return $modelInstance;
@@ -72,20 +76,28 @@ class Factory
 
     private function product($model)
     {
+        $flags = $this->flags;
         $dto = new ProductDTO;
         $dto->name = $model->name;
         $dto->description = $model->description;
         $dto->category = $this->intoDTO($model->category);
         $dto->brand = $model->brand->name;
-        $dto->prices = $model->activePrices->map(function ($price) { 
-            $priceDTO = new PriceDTO;
-            if($price->userGroup) {
-                $priceDTO->group = $price->userGroup->label;
-            }
-            $priceDTO->price = (double) $price->price;
-            $priceDTO->created = $price->created;
-            return $priceDTO;
-        });
+
+        if(isset($flags['price'])) {
+            $dto->ignore('prices');
+        } else {
+            $dto->prices = $model->activePrices->map(function ($price) { 
+                $priceDTO = new PriceDTO;
+                if($price->userGroup) {
+                    $priceDTO->group = $price->userGroup->label;
+                }
+                $priceDTO->price = (double) $price->price;
+                $priceDTO->created = $price->created;
+                return $priceDTO;
+            });
+        }
+
+
         return $dto;
     }
 }

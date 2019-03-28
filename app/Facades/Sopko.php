@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
  */
 class Sopko extends Facade
 {
+    // TODO: add per page to be used with query string
     public const PER_PAGE = 10;
 
     protected static function getFacadeAccessor()

@@ -29,7 +29,7 @@ class Product extends Model
     {
         return $this->hasMany(ProductPrice::class)
             ->selectRaw('max(created_at) as created, product_id, price, group_slug')
-            ->groupBy(['product_id', 'price', 'group_slug']);
+            ->groupBy(['product_id', 'group_slug', 'price']);
     }
 
     public function storages()

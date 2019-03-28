@@ -15,7 +15,7 @@ class ProductRequest extends ApiRequest
         $rules = [
             "image_paths" => "required|array|max:8",
             "brand_id" => "required|numeric",
-            "price" => "required|numeric",
+            "price" => "required|numeric|min:0",
             "category_id" => "required|numeric",
             "storage_id"  => "required|numeric",
             "name" => "required|string",

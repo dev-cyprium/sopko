@@ -40,4 +40,9 @@ class ProductController extends ApiController
     {
         return $this->ok('Listing products.', $products->getAll()->serialize());
     }
+
+    public function show($priceGroup, ProductRepository $products)
+    {
+        return $this->ok('Listing products.', $products->getGroupScope($priceGroup)->serialize());
+    }
 }

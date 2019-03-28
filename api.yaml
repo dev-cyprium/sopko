@@ -624,7 +624,6 @@ definitions:
         example: "+381 112223 45"
       telephone_2:
         type: "string"
-        example: "+381 111 223"
   Order:
     type: "object"
     properties:

@@ -80,7 +80,7 @@ class ProductRepository extends EloquentRepository
             ->map(function($data) use ($account) {
                 if(array_key_exists('group', $data)) {
                     $label = $data['group']['label'];
-                    $slug  = md5($account->salt . $label);
+                    $slug  = md5($account->salt . strtolower($label));
 
                     $account->userGroups()->create(compact('slug', 'label'));
                     return [
@@ -92,7 +92,7 @@ class ProductRepository extends EloquentRepository
                 return $data;
             })
             ->each(function ($group_with_names) use ($account) {
-                $slug = md5($account->salt . $group_with_names['group_name']);
+                $slug = md5($account->salt . strtolower($group_with_names['group_name']));
                 $this->newPrice($group_with_names['price'], $slug);
             });
     }
@@ -104,15 +104,56 @@ class ProductRepository extends EloquentRepository
      */
     public function getAll() 
     {
-        $account = Sopko::get('account');
-        $result = Product::with(['storages', 'activePrices.userGroup', 'brand', 'category'])
-            ->where('account_id', $account->id)
-            ->paginate(Sopko::PER_PAGE);
-
+        $result = $this->getData();
         $items = collect($result->items())
             ->map(function($product) { return BaseDTO::intoDTO($product); });
         
-
         return new ProductCollectionDTO($items, $result);
+    }
+
+    /**
+     * Get the scope for a specific group and prices
+     * scoped to that group.
+     */
+    public function getGroupScope($groupName) 
+    {
+        $account = Sopko::get('account');
+        $slug = md5($account->salt . strtolower($groupName));
+        $data = $this->getData();
+
+        $result = collect($data->items())
+            ->map(function($product) use ($slug) {
+                $price = $product
+                    ->activePrices
+                    ->filter(function($price) use ($slug) {
+                        return $price->group_slug === $slug;
+                    })
+                    ->first();
+                // Exists price for user group
+                if($price) {
+                    $price = $price->price;
+                    return BaseDTO::intoDTO($product, compact('price'));
+                } else {
+                    $defaultPrice = $product
+                        ->activePrices
+                        ->filter(function ($price) {
+                            return $price->group_slug === null;
+                        })
+                        ->first()
+                        ->price;
+
+                    return BaseDTO::intoDTO($product, ['price' => $defaultPrice]);
+                }
+            });
+
+        return new ProductCollectionDTO($result, $data);
+    }
+
+    private function getData()
+    {
+        $account = Sopko::get('account');
+        return Product::with(['storages', 'activePrices.userGroup', 'brand', 'category'])
+            ->where('account_id', $account->id)
+            ->paginate(Sopko::PER_PAGE);
     }
 }
