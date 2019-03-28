@@ -2,9 +2,6 @@
 
 namespace App\Repo\DTO;
 
-use App\Models\ProductCategory;
-
-
 abstract class BaseDTO 
 {
     /**

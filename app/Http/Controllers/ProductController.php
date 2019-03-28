@@ -7,6 +7,7 @@ use App\Repo\ProductRepository;
 use App\Facades\Sopko;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\AuthenticationException;
+use App\Models\Product;
 
 class ProductController extends ApiController
 {
@@ -32,6 +33,11 @@ class ProductController extends ApiController
                 $products->bindUserGroups($request->input('price_groups'));
             }
         });
-        return $this->ok('Product created');
+        return $this->ok('Product created successfully');
+    }
+
+    public function index(ProductRepository $products)
+    {
+        return $this->ok('Listing products.', $products->getAll()->serialize());
     }
 }

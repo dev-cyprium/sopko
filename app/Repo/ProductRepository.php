@@ -8,6 +8,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use App\Facades\Sopko;
 use App\Models\Storage;
 use Carbon\Carbon;
+use App\Repo\DTO\BaseDTO;
+use App\Repo\DTO\ProductCollectionDTO;
 
 // TODO: add interface
 class ProductRepository extends EloquentRepository
@@ -93,5 +95,24 @@ class ProductRepository extends EloquentRepository
                 $slug = md5($account->salt . $group_with_names['group_name']);
                 $this->newPrice($group_with_names['price'], $slug);
             });
+    }
+
+    /**
+     * @override getAll
+     * We override the default Eloquent's way to fetch all by adding pagination
+     * and our own logic to it
+     */
+    public function getAll() 
+    {
+        $account = Sopko::get('account');
+        $result = Product::with(['storages', 'activePrices.userGroup', 'brand', 'category'])
+            ->where('account_id', $account->id)
+            ->paginate(Sopko::PER_PAGE);
+
+        $items = collect($result->items())
+            ->map(function($product) { return BaseDTO::intoDTO($product); });
+        
+
+        return new ProductCollectionDTO($items, $result);
     }
 }

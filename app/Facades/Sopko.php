@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Session;
  */
 class Sopko extends Facade
 {
+    public const PER_PAGE = 10;
+
     protected static function getFacadeAccessor()
     {
         return 'Sopko';
