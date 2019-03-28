@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use App\Repo\DTO\BaseDTO;
 use App\Repo\DTO\ProductCollectionDTO;
 use App\Repo\Contracts\ProductContract;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 // TODO: add interface
 class ProductRepository extends EloquentRepository implements ProductContract
@@ -116,6 +118,7 @@ class ProductRepository extends EloquentRepository implements ProductContract
     {
         $account = Sopko::get('account');
         $slug = md5($account->salt . strtolower($groupName));
+        $this->checkAnyData($account, $slug);
         $data = $this->getData();
 
         $result = collect($data->items())
@@ -144,6 +147,19 @@ class ProductRepository extends EloquentRepository implements ProductContract
             });
 
         return new ProductCollectionDTO($result, $data);
+    }
+
+    private function checkAnyData($account, $slug) 
+    {
+        $any = Product::where('account_id', $account->id)
+            ->whereHas('prices', function($q) use ($slug) {
+                $q->where('group_slug', $slug);
+            })
+            ->get();
+        
+        if($any->isEmpty()) {
+            throw new UnprocessableEntityHttpException("The category you're trying to fetch has no data");
+        }
     }
 
     private function getData()
