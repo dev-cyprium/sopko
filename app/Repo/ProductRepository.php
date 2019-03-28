@@ -10,21 +10,18 @@ use App\Models\Storage;
 use Carbon\Carbon;
 use App\Repo\DTO\BaseDTO;
 use App\Repo\DTO\ProductCollectionDTO;
+use App\Repo\Contracts\ProductContract;
 
 // TODO: add interface
-class ProductRepository extends EloquentRepository
+class ProductRepository extends EloquentRepository implements ProductContract
 {
     public function model() 
     {
         return Product::class;
     }
 
-    /**
-     * Binds the images to the stored model.
-     * Must be called after $this->model is saved
-     * to the database.
-     */
-    public function bindImages(array $imageHashs) 
+    
+    public function bindImages(array $imageHashs) : void 
     {
         $images = Image::whereIn('path', $imageHashs)
             ->where('account_id', Sopko::get('account')->id)
@@ -41,21 +38,21 @@ class ProductRepository extends EloquentRepository
         $this->model->save();
     }
 
-    public function newPrice(int $price, string $slug = null)
+    public function newPrice($price, string $slug = null) : void
     {
         $price = $this->model->prices()->make(compact('price'));
         $price->group_slug = $slug;
         $price->save();
-    }   
+    }
 
-    public function bindStorage(int $idStorage, int $quantity)
+    public function bindStorage(int $idStorage, int $quantity) : void
     {
         $storage = Storage::find($idStorage);
         // TODO: check if storage belongs to account
         $this->model->storages()->attach($storage, compact('quantity'));
     }
 
-    public function bindSales(array $sales) 
+    public function bindSales(array $sales) : void
     {
         $sales = collect($sales)
             ->map(function($sale) {   
@@ -73,7 +70,7 @@ class ProductRepository extends EloquentRepository
         $this->model->sales()->saveMany($sales);
     }
 
-    public function bindUserGroups(array $groups)
+    public function bindUserGroups(array $groups) : void
     {
         $account = Sopko::get('account');  
         collect($groups)
@@ -115,7 +112,7 @@ class ProductRepository extends EloquentRepository
      * Get the scope for a specific group and prices
      * scoped to that group.
      */
-    public function getGroupScope($groupName) 
+    public function getGroupScope($groupName) : ProductCollectionDTO
     {
         $account = Sopko::get('account');
         $slug = md5($account->salt . strtolower($groupName));

@@ -11,6 +11,8 @@ use App\Repo\CategoryRepository;
 use App\Repo\Contracts\ImageContract;
 use App\Repo\ImageRepository;
 use Illuminate\Support\Facades\Validator;
+use App\Repo\Contracts\ProductContract;
+use App\Repo\ProductRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(AccountContract::class, AccountRepository::class);
         $this->app->bind(CategoryContract::class, CategoryRepository::class);
         $this->app->bind(ImageContract::class, ImageRepository::class);
+        $this->app->bind(ProductContract::class, ProductRepository::class);
     }
 
     /**

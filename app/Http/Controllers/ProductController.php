@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
-use App\Repo\ProductRepository;
 use App\Facades\Sopko;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Auth\AuthenticationException;
-use App\Models\Product;
+use App\Http\Requests\ProductRequest;
+use App\Repo\Contracts\ProductContract;
 
 class ProductController extends ApiController
 {
-    public function store(ProductRequest $request, ProductRepository $products)
+    protected $products;
+
+    public function __construct(ProductContract $products)
     {
+        $this->products = $products;
+    }
+
+    public function store(ProductRequest $request)
+    {
+        $products = $this->products;
         DB::transaction(function () use ($products, $request) {
             $category_id = $request->input('category_id');
             $brand_id    = $request->input('brand_id');
@@ -22,7 +28,7 @@ class ProductController extends ApiController
 
             $products->store(compact('name', 'description'), compact('category_id', 'brand_id', 'account_id'));
             $products->bindImages($request->input('image_paths'));
-            $products->newPrice((int) $request->input('price'));
+            $products->newPrice(floatval($request->input('price')));
             $products->bindStorage((int) $request->input('storage_id'), (int) $request->input('quantity'));
 
             if($request->has('sales')) {
@@ -36,13 +42,13 @@ class ProductController extends ApiController
         return $this->ok('Product created successfully');
     }
 
-    public function index(ProductRepository $products)
+    public function index()
     {
-        return $this->ok('Listing products.', $products->getAll()->serialize());
+        return $this->ok('Listing products.', $this->products->getGroupScope(null)->serialize());
     }
 
-    public function show($priceGroup, ProductRepository $products)
+    public function show($priceGroup)
     {
-        return $this->ok('Listing products.', $products->getGroupScope($priceGroup)->serialize());
+        return $this->ok('Listing products.', $this->products->getGroupScope($priceGroup)->serialize());
     }
 }
