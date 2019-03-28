@@ -31,15 +31,18 @@ abstract class BaseDTO
                 });
             } else if(is_array($val) || $val instanceof Collection) {
                 collect($val)->map(function($v) use ($name, &$fields) {
+                    if(!isset($fields[$name])) {
+                        $fields[$name] = [];
+                    }
+                    
                     if($v instanceof BaseDTO) {
                         $localFields = $v->serialize();
+                        $obj = [];
                         foreach($localFields as $k => $v) {
-                            $fields[$name][$k] = $v;    
+                            $obj[$k] = $v;
                         }
+                        $fields[$name][] = $obj;
                     } else {
-                        if(!isset($fields[$name])) {
-                            $fields[$name] = [];
-                        }
                         $fields[$name][] = $v;
                     }
                 });
@@ -57,11 +60,19 @@ abstract class BaseDTO
         return $fields;
     }
 
+    /**
+     * Ignore a field durning rendering of the DTO
+     * handfull when you have several fields that
+     * exclude one or other.
+     */
     public function ignore(string $field) 
     {
         $this->unused[] = $field;
     }
 
+    /**
+     * Returns weather or not a given array is associative
+     */
     function isAssoc($arr)
     {
         if($arr instanceof Collection) return false;
@@ -76,7 +87,7 @@ abstract class BaseDTO
      */
     public static function intoDTO($modelInstance, $flags = [])
     {
-        $factory = Factory::make();
+        $factory = AutoMapper::make();
         return $factory->intoDTO($modelInstance, null, $flags);
     }
 }

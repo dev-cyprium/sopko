@@ -6,10 +6,11 @@ use App\Models\ProductCategory;
 use App\Models\Image;
 use App\Models\Account;
 use App\Models\Product;
+use App\Models\Storage;
 
 /* TODO: Rename Factory to DTOMapper or just AutoMapper
    TODO: Change function names to static */
-class Factory
+class AutoMapper
 {
     private static $instance = null;
 
@@ -18,6 +19,7 @@ class Factory
         Image::class => 'image',
         Account::class => 'account',
         Product::class => 'product',
+        Storage::class => 'storage',
     ];
 
     protected $flags;
@@ -74,6 +76,18 @@ class Factory
         return $dto;
     }
 
+    private function storage($model)
+    {
+        $dto = new StorageDTO;
+        $dto->address = $model->address;
+        $dto->geo = [
+            'lat' => $model->geo_lat,
+            'lon' => $model->geo_lon
+        ];
+        $dto->name = $model->name;
+        return $dto;
+    }
+
     private function product($model)
     {
         $flags = $this->flags;
@@ -82,10 +96,19 @@ class Factory
         $dto->description = $model->description;
         $dto->category = $this->intoDTO($model->category);
         $dto->brand = $model->brand->name;
-
+        
+        
         if(isset($flags['price'])) {
+            /* public data */
             $dto->ignore('prices');
+            $dto->ignore('storages');
+            $dto->price = $flags['price'];
         } else {
+            /* admin panel data */
+            $dto->ignore('price');
+            $dto->storages = $model->storages->map(function($storage) { 
+                return $this->intoDTO($storage);
+            });
             $dto->prices = $model->activePrices->map(function ($price) { 
                 $priceDTO = new PriceDTO;
                 if($price->userGroup) {

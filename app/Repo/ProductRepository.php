@@ -131,7 +131,7 @@ class ProductRepository extends EloquentRepository
                     ->first();
                 // Exists price for user group
                 if($price) {
-                    $price = $price->price;
+                    $price = (double) $price->price;
                     return BaseDTO::intoDTO($product, compact('price'));
                 } else {
                     $defaultPrice = $product
@@ -142,7 +142,7 @@ class ProductRepository extends EloquentRepository
                         ->first()
                         ->price;
 
-                    return BaseDTO::intoDTO($product, ['price' => $defaultPrice]);
+                    return BaseDTO::intoDTO($product, ['price' => (double) $defaultPrice]);
                 }
             });
 

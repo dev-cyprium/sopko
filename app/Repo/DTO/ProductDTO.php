@@ -36,6 +36,12 @@ final class ProductDTO extends BaseDTO
 
 
     /**
+     * The price of this product
+     * @var double
+     */
+    public $price;
+
+    /**
      * The category belonging to this product
      * @var CategoryDTO
      */
@@ -46,7 +52,5 @@ final class ProductDTO extends BaseDTO
      * @var string
      */
     public $brand;
-
-    public $arr = [1,2,3];
 }
 
