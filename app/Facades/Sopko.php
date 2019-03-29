@@ -7,12 +7,10 @@ use Illuminate\Support\Facades\Session;
 
 /**
  * @method static mixed get(string $key)
+ * @method static void remember(string $key, mixed $value)
  */
 class Sopko extends Facade
 {
-    // TODO: add per page to be used with query string
-    public const PER_PAGE = 10;
-
     protected static function getFacadeAccessor()
     {
         return 'Sopko';

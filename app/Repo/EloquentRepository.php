@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Auth\Events\Registered;
 use App\Repo\DTO\BaseDTO;
+use App\Facades\Sopko;
 
 abstract class EloquentRepository implements Repository
 {
@@ -18,10 +19,17 @@ abstract class EloquentRepository implements Repository
      */
     protected $model;
 
+    protected $perPage = 15;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->perPage = Sopko::get('per_page');
         $this->makeModel();
+
+        Sopko::observe('per_page', function($new_val) {
+            $this->perPage = $new_val;
+        });
     }
 
     public function getAll() 

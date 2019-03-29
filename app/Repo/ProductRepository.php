@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-// TODO: add interface
 class ProductRepository extends EloquentRepository implements ProductContract
 {
     public function model() 
@@ -168,6 +167,6 @@ class ProductRepository extends EloquentRepository implements ProductContract
         $account = Sopko::get('account');
         return Product::with(['storages', 'activePrices.userGroup', 'brand', 'categories'])
             ->where('account_id', $account->id)
-            ->paginate(Sopko::PER_PAGE);
+            ->paginate((int) $this->perPage);
     }
 }

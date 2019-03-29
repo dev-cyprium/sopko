@@ -8,8 +8,6 @@ use App\Models\Account;
 use App\Models\Product;
 use App\Models\Storage;
 
-/* TODO: Rename Factory to DTOMapper or just AutoMapper
-   TODO: Change function names to static */
 class AutoMapper
 {
     private static $instance = null;

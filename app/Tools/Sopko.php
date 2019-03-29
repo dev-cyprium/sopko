@@ -11,14 +11,28 @@ namespace App\Tools;
 class Sopko
 {
     private $store;
+    private $observers = [];
 
     public function remember($key, $val) 
     {
+        collect($this->observers)->each(function($observer) use ($key, $val) {
+            if($key === $observer['key']) {
+                $observer['callback']($val);
+            }
+        });
         $this->store[$key] = $val;
     }
 
     public function get($key)
     {
         return $this->store[$key];
+    }
+
+    public function observe($key, \Closure $callback) 
+    {
+        $this->observers[] = [
+            'key' => $key,
+            'callback' => $callback
+        ];
     }
 }
