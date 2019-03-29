@@ -20,13 +20,14 @@ class ProductController extends ApiController
     {
         $products = $this->products;
         DB::transaction(function () use ($products, $request) {
-            $category_id = $request->input('category_id');
+            $category_ids = $request->input('category_ids');
             $brand_id    = $request->input('brand_id');
             $name        = $request->input('name');
             $description = $request->input('description');
             $account_id  = Sopko::get('account')->id;
 
-            $products->store(compact('name', 'description'), compact('category_id', 'brand_id', 'account_id'));
+            $products->store(compact('name', 'description'), compact('brand_id', 'account_id'));
+            $products->bindCategoryIds($category_ids);
             $products->bindImages($request->input('image_paths'));
             $products->newPrice(floatval($request->input('price')));
             $products->bindStorage((int) $request->input('storage_id'), (int) $request->input('quantity'));

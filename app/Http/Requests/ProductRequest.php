@@ -16,7 +16,7 @@ class ProductRequest extends ApiRequest
             "image_paths" => "required|array|max:8",
             "brand_id" => "required|numeric",
             "price" => "required|numeric|min:0",
-            "category_id" => "required|numeric",
+            "category_ids" => "required|array",
             "storage_id"  => "required|numeric",
             "name" => "required|string",
             "description" => "required|string|min:5|max:100",

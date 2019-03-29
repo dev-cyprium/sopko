@@ -94,9 +94,8 @@ class AutoMapper
         $dto = new ProductDTO;
         $dto->name = $model->name;
         $dto->description = $model->description;
-        $dto->category = $this->intoDTO($model->category);
+        $dto->categories = $model->categories->map(function($category) { return $this->intoDTO($category); });
         $dto->brand = $model->brand->name;
-        
         
         if(isset($flags['price'])) {
             /* public data */

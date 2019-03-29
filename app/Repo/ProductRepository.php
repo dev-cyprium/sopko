@@ -48,6 +48,11 @@ class ProductRepository extends EloquentRepository implements ProductContract
         $price->save();
     }
 
+    public function bindCategoryIds(array $ids) : void 
+    {
+        $this->model->categories()->attach($ids);
+    }
+
     public function bindStorage(int $idStorage, int $quantity) : void
     {
         $storage = Storage::find($idStorage);
@@ -97,11 +102,6 @@ class ProductRepository extends EloquentRepository implements ProductContract
             });
     }
 
-    /**
-     * @override getAll
-     * We override the default Eloquent's way to fetch all by adding pagination
-     * and our own logic to it
-     */
     public function getAll() 
     {
         $result = $this->getData();
@@ -166,7 +166,7 @@ class ProductRepository extends EloquentRepository implements ProductContract
     private function getData()
     {
         $account = Sopko::get('account');
-        return Product::with(['storages', 'activePrices.userGroup', 'brand', 'category'])
+        return Product::with(['storages', 'activePrices.userGroup', 'brand', 'categories'])
             ->where('account_id', $account->id)
             ->paginate(Sopko::PER_PAGE);
     }

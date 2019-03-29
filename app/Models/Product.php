@@ -37,9 +37,9 @@ class Product extends Model
         return $this->belongsToMany(Storage::class, 'product_storages');
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->belongsToMany(ProductCategory::class, 'product_categories_pivot', 'product_id', 'category_id');
     }
 
     public function sales() 

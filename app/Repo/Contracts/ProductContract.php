@@ -42,4 +42,9 @@ interface ProductContract extends Repository
      * scoped to that group
      */
     public function getGroupScope($groupName) : ProductCollectionDTO;
+
+    /**
+     * Attach category ids array
+     */
+    public function bindCategoryIds(array $ids) : void;
 }

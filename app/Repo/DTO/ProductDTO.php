@@ -45,7 +45,7 @@ final class ProductDTO extends BaseDTO
      * The category belonging to this product
      * @var CategoryDTO
      */
-    public $category;
+    public $categories;
 
     /**
      * The brand of this product

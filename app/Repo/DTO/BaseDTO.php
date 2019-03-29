@@ -30,6 +30,10 @@ abstract class BaseDTO
                     $fields[$key] = $val;
                 });
             } else if(is_array($val) || $val instanceof Collection) {
+                if(collect($val)->isEmpty()) {
+                    $fields[$name] = [];
+                }
+                
                 collect($val)->map(function($v) use ($name, &$fields) {
                     if(!isset($fields[$name])) {
                         $fields[$name] = [];
