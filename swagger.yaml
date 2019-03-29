@@ -1,0 +1,642 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Sopko
+  description: ''
+  contact: {}
+host: 'Sopko'
+basePath: /admin
+schemes: []
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /storages:
+    get:
+      description: ''
+      summary: List
+      tags:
+      - Storage
+      operationId: StoragesPerPage10Page2Get
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /admin/storages:
+    post:
+      description: ''
+      summary: New Storage
+      tags:
+      - Storage
+      operationId: AdminStoragesPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/NewStorageRequest'
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /products/gold:
+    get:
+      description: Lists products with price not realted to any user group in particualar
+      summary: List
+      tags:
+      - Products
+      operationId: ProductsGoldPerPage1Get
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /admin/products:
+    get:
+      description: ''
+      summary: Admin List
+      tags:
+      - Products
+      operationId: AdminProductsPerPage5Get
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /gold:
+    get:
+      description: ''
+      summary: List (group)
+      tags:
+      - Products
+      operationId: GoldGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /products:
+    post:
+      description: ''
+      summary: Create (new group)
+      tags:
+      - Products
+      operationId: ProductsPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/Create%28newgroup%29Request'
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /images:
+    get:
+      description: ''
+      summary: List
+      tags:
+      - Image
+      operationId: ImagesGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+    post:
+      description: ''
+      summary: Create
+      tags:
+      - Image
+      operationId: ImagesPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /images/c36f26ac-f771-4e27-9acb-c99973834cce_1553423268.png:
+    delete:
+      description: ''
+      summary: Delete
+      tags:
+      - Image
+      operationId: ImagesC36f26acF7714e279acbC99973834cce1553423268PngDelete
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /127f1cf1-b4af-462f-a3d7-f055a12382be_1553336756.png:
+    get:
+      description: ''
+      summary: Get
+      tags:
+      - Image
+      operationId: 127f1cf1B4af462fA3d7F055a12382be1553336756PngGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /categories:
+    get:
+      description: ''
+      summary: User Categories
+      tags:
+      - Categories
+      operationId: CategoriesGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+    post:
+      description: ''
+      summary: New Category
+      tags:
+      - Categories
+      operationId: CategoriesPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/NewCategoryRequest'
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /categories/6:
+    put:
+      description: ''
+      summary: Change Category
+      tags:
+      - Categories
+      operationId: Categories6Put
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/ChangeCategoryRequest'
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /categories/1:
+    delete:
+      description: ''
+      summary: Delete Category
+      tags:
+      - Categories
+      operationId: Categories1Delete
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /account:
+    post:
+      description: ''
+      summary: Register
+      operationId: AccountPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/RegisterRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+  /login:
+    post:
+      description: ''
+      summary: Login
+      operationId: LoginPost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/LoginRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          headers: {}
+definitions:
+  NewStorageRequest:
+    title: NewStorageRequest
+    example:
+      geo_lat: -15.220000000000001
+      geo_lon: 55.219999999999999
+      address: City 32
+      name: Some Name
+      type_id: 1
+    type: object
+    properties:
+      geo_lat:
+        type: number
+        format: double
+      geo_lon:
+        type: number
+        format: double
+      address:
+        type: string
+      name:
+        type: string
+      type_id:
+        type: integer
+        format: int32
+    required:
+    - geo_lat
+    - geo_lon
+    - address
+    - name
+    - type_id
+  Create(newgroup)Request:
+    title: Create(newgroup)Request
+    example:
+      image_paths:
+      - 0793f136-ebf4-4d1f-853c-bccf2c32924d_1553791707.jpg
+      brand_id: 2
+      price: 300000
+      category_id: 10
+      storage_id: 2
+      name: MacBook Air
+      description: Apples laptop
+      quantity: 100
+      sales:
+      - from: 2015-12-01
+        to: 2015-12-30
+        percent: 50
+      price_groups:
+      - group:
+          label: Gold
+        price: 150000
+      - group:
+          label: Bronze
+        price: 100000
+    type: object
+    properties:
+      image_paths:
+        type: array
+        items:
+          type: string
+      brand_id:
+        type: integer
+        format: int32
+      price:
+        type: integer
+        format: int32
+      category_id:
+        type: integer
+        format: int32
+      storage_id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      quantity:
+        type: integer
+        format: int32
+      sales:
+        type: array
+        items:
+          type: object
+      price_groups:
+        type: array
+        items:
+          type: object
+    required:
+    - image_paths
+    - brand_id
+    - price
+    - category_id
+    - storage_id
+    - name
+    - description
+    - quantity
+    - sales
+    - price_groups
+  Create(existing)Request:
+    title: Create(existing)Request
+    example:
+      image_paths:
+      - 0793f136-ebf4-4d1f-853c-bccf2c32924d_1553791707.jpg
+      brand_id: 1
+      price: 150
+      category_ids:
+      - 1
+      - 9
+      - 10
+      storage_id: 2
+      name: Schweppes
+      description: Classical chweppes drink
+      quantity: 100
+      price_groups:
+      - group_name: Gold
+        price: 120
+    type: object
+    properties:
+      image_paths:
+        type: array
+        items:
+          type: string
+      brand_id:
+        type: integer
+        format: int32
+      price:
+        type: integer
+        format: int32
+      category_ids:
+        type: array
+        items:
+          type: integer
+          format: int32
+      storage_id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      quantity:
+        type: integer
+        format: int32
+      price_groups:
+        type: array
+        items:
+          type: object
+    required:
+    - image_paths
+    - brand_id
+    - price
+    - category_ids
+    - storage_id
+    - name
+    - description
+    - quantity
+    - price_groups
+  NewCategoryRequest:
+    title: NewCategoryRequest
+    example:
+      title: Example Category 2
+      parent_category_id: 1
+    type: object
+    properties:
+      title:
+        type: string
+      parent_category_id:
+        type: integer
+        format: int32
+    required:
+    - title
+    - parent_category_id
+  ChangeCategoryRequest:
+    title: ChangeCategoryRequest
+    example:
+      title: Blablalbblalba
+    type: object
+    properties:
+      title:
+        type: string
+    required:
+    - title
+  RegisterRequest:
+    title: RegisterRequest
+    example:
+      company_name: Test company
+      email: company9@mail.com
+      password: FooBar123
+      full_name: Stefan Kupresak
+    type: object
+    properties:
+      company_name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      full_name:
+        type: string
+    required:
+    - company_name
+    - email
+    - password
+    - full_name
+  LoginRequest:
+    title: LoginRequest
+    example:
+      email: stefke@email.com
+      password: secret
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+tags:
+- name: Storage
+  description: ''
+- name: Products
+  description: ''
+- name: Image
+  description: ''
+- name: Categories
+  description: ''
