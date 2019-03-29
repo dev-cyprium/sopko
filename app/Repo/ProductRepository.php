@@ -167,6 +167,6 @@ class ProductRepository extends EloquentRepository implements ProductContract
         $account = Sopko::get('account');
         return Product::with(['storages', 'activePrices.userGroup', 'brand', 'categories'])
             ->where('account_id', $account->id)
-            ->paginate((int) $this->perPage);
+            ->paginate($this->perPage);
     }
 }

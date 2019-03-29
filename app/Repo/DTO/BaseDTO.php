@@ -26,9 +26,12 @@ abstract class BaseDTO
             }
 
             if(is_array($val) && $this->isAssoc($val)) {
-                collect($val)->map(function($val, $key) use (&$fields) {
-                    $fields[$key] = $val;
+                $obj = [];
+                collect($val)->map(function($val, $key) use (&$obj) {
+                    $obj[$key] = $val;
                 });
+
+                $fields[$name] = $obj;
             } else if(is_array($val) || $val instanceof Collection) {
                 if(collect($val)->isEmpty()) {
                     $fields[$name] = [];
@@ -80,7 +83,7 @@ abstract class BaseDTO
     function isAssoc($arr)
     {
         if($arr instanceof Collection) return false;
-        if (array() === $arr) return false;
+        
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 

@@ -19,16 +19,16 @@ abstract class EloquentRepository implements Repository
      */
     protected $model;
 
-    protected $perPage = 15;
+    protected $perPage;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->perPage = Sopko::get('per_page');
+        $this->perPage = (int) Sopko::get('per_page');
         $this->makeModel();
-
+        
         Sopko::observe('per_page', function($new_val) {
-            $this->perPage = $new_val;
+            $this->perPage = ((int) $new_val);
         });
     }
 

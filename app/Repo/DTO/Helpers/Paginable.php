@@ -13,8 +13,8 @@ trait Paginable
     public function injectPaginationData($paginator)
     {
         $this->meta = [
-            'total' => $paginator->total(),
-            'current_page' => $paginator->currentPage(),
+            'total' => (int) $paginator->total(),
+            'current_page' => (int) $paginator->currentPage(),
             'per_page' => $paginator->perPage(),
         ];
     }

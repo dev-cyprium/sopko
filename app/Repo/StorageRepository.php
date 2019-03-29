@@ -3,10 +3,10 @@
 namespace App\Repo;
 
 use App\Models\Image;
-use App\Models\Account;
+use App\Facades\Sopko;
+use App\Models\Storage as AppStorage;
+use App\Repo\DTO\StorageCollectionDTO;
 use App\Repo\DTO\BaseDTO;
-use App\Repo\DTO\ImageCollectionDTO;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StorageRepository extends EloquentRepository 
 {
@@ -15,5 +15,13 @@ class StorageRepository extends EloquentRepository
         return Image::class;
     }
 
-    
+    public function getAll()
+    {
+        $account = Sopko::get('account');
+        $paginator = AppStorage::where('account_id', $account->id)->paginate($this->perPage);
+
+        $items = collect($paginator->items())->map(function($item) { return BaseDTO::intoDTO($item); });
+
+        return new StorageCollectionDTO($items, $paginator);
+    }
 }
