@@ -12,7 +12,7 @@ class StorageRepository extends EloquentRepository
 {
     public function model() 
     {
-        return Image::class;
+        return AppStorage::class;
     }
 
     public function getAll()

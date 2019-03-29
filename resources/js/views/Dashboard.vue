@@ -36,17 +36,23 @@
                     <v-card-title>
                         <h1>Proizvodi</h1>
                     </v-card-title>
-                        <v-data-table :headers="headers" :items="products" class="elevation-1">
-                            <template v-slot:items="props">
+                        <v-data-table 
+                            :headers="headers" 
+                            :items="serverProducts" 
+                            :pagination.sync="pagination"
+                            :loading="loading"
+                            :total-items="total"
+                            class="elevation-1">
+                            <template v-slot:items="{item}">
                                 <td class="pt-2 pb-1">
-                                    <img :src="props.item.img">
+                                    <img src="https://via.placeholder.com/75">
                                 </td>
-                                <td class="text-xs-left">{{ props.item.name }}</td>
-                                <td class="text-xs-left">{{ props.item.current_price }}</td>
-                                <td class="text-xs-left">{{ props.item.quantity }}</td>
+                                <td class="text-xs-left">{{ item.name }}</td>
+                                <td class="text-xs-left">{{ item.prices[0].price }}</td>
+                                <td class="text-xs-left">100</td>
                                 <td class="text-xs-left">
                                     <a href="#">
-                                        {{ props.item.storage.location }}
+                                        {{ item.storages[0].address }}
                                     </a>
                                 </td>
                             </template>
@@ -61,6 +67,7 @@
 <script>
     import AdminCard from '../components/AdminCard'
     import products from './mocks/products'
+    import axios from 'axios'
 
     export default {
         components: {
@@ -91,9 +98,45 @@
                         value: 'storage.location'
                     }
                 ],
-                products
-                }
+                products,
+                serverProducts: [],
+                loading: true,
+                pagination: {},
+                total: 0
             }
+        },
+        watch: {
+            pagination: {
+                handler () {
+                    this.getDataFromApi()
+                        .then(data => {
+                            this.serverProducts = data.products
+                        })
+                },
+                deep: true
+            }
+        },
+        mounted() {
+            
+        },
+        methods: {
+            getDataFromApi() {
+                this.loading = true
+                return new Promise(resolve => {
+                    const { page, rowsPerPage } = this.pagination
+
+                    setTimeout(() => {
+                        const uri = `/api/admin/products?per_page=${rowsPerPage}&page=${page}`;
+                        axios.get(uri)
+                            .then(resp => { 
+                                this.total = resp.data.meta.total
+                                this.loading = false
+                                resolve(resp.data) 
+                            })
+                    }, 1300)
+                })
+            }
+        }
     }
 
 </script>

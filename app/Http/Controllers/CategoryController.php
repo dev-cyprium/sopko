@@ -37,7 +37,7 @@ class CategoryController extends ApiController
 
     public function update($id, UpdateProductCategoryRequest $request) 
     {
-        $title     = $request->input('title');
+        $title = $request->input('title');
         $this->categoryProvider->setModel($id);
         if($request->has('parent_category_id')) {
             $parent_id = $request->input('parent_category_id');
